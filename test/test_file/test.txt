@@ -1,0 +1,40 @@
+echo test1
+ls > .tmp1 ; < .tmp1 > .tmp1 ls -l > .tmp2 ; cat -e .tmp2 ; rm .tmp1 .tmp2
+echo test2
+3>.tmp1 ls . prout 1>&3 2>&1 ; 4>.tmp2 1>&4 cat -e 2>&1 .tmp1 4>&-prout ; cat -e .tmp2 ; rm .tmp1 .tmp2
+echo test3
+3>.tmp1 1>&3 2>&1 ls . 3>&-prout ; cat .tmp1 ; rm .tmp1
+echo test4
+3>.tmp1 1>&3 ls . prout 1>&- ; cat .tmp1 ; rm .tmp1
+echo test5
+ls > .tmp1 ; < .tmp1 > .tmp1 ls -l > .tmp2 ; < .tmp1 > .tmp1 ls -l > .tmp3 ; cat .tmp2 .tmp3 ; rm .tmp1 .tmp2 .tmp3
+echo test6 
+ls 3>.tmp1 4>.tmp2 3>&4 1>&4 ; cat -e .tmp2; rm .tmp1 .tmp2
+echo test7
+ls 3>.tmp1 1<&3 2>&1 . prout ; cat < .tmp1 ; rm .tmp1
+echo test8
+ls | cat -e | cat -e | cat -e > .tmp1 ; cat < .tmp1 > .tmp2 ; cat < .tmp2 ; rm .tmp1 .tmp2
+echo test10
+ls -lR / | pwd
+echo test11
+ls > .tmp1 > .tmp2 ; cat -e < .tmp1 < .tmp2 ; rm .tmp1 .tmp2
+echo test12
+ls -l | cat -e | cat -e | sed s/staff/prout/
+echo test15
+ls || ls | cat -e && ls
+echo test16
+ls -l > .tmp1 ; cat -e .tmp1 ; rm .tmp1
+echo test17
+echo lala | cat -e > .tmp1 ; cat .tmp1 ; rm .tmp1
+echo test19
+cd .. ; pwd ; cd - ; pwd 
+echo test20
+env ls -l | cat -e
+echo test21
+echo ~/'$HOME'"$HOME"/lala/"$HOME"prout
+echo test23
+echo $HOME$
+echo test 24
+env ls | cat -e
+echo test 25
+export PATH=$PATH:/prout && echo $PATH

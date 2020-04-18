@@ -1,0 +1,7 @@
+ls | cat -e
+ls > truc && cat truc ; rm truc
+echo 'caca$prout'
+#salut
+env echo bla | cat -e
+export toto="ls -lt" ; $toto ; unset toto ; echo $toto
+echo toto="ls -la" $toto
