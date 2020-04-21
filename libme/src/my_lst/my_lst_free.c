@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   my_isprint.c                                    /       \.'`  `',.--//   */
+/*   my_lst_free.c                                   /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/03/16 11:27:00 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 16:45:27 by adandres                                 */
+/*   Created: 2020/04/19 02:14:06 by adandres               /    /  /         */
+/*   Updated: 2020/04/19 02:18:43 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		my_isprint(int c)
+#include "my_lst.h"
+
+void	my_lst_free(t_list *list)
 {
-	if ((c >= 32 && c <= 126) || c < 0)
-		return (1);
-	return (0);
+	t_list *next;
+
+	while (list)
+	{
+		next = list->next;
+		free(list->content);
+		free(list);
+		list = next;
+	}
 }

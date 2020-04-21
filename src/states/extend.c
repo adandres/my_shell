@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:13:50 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 19:15:07 by adandres                                 */
+/*   Updated: 2020/04/21 19:08:59 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*get_truc(char *input)
 	return (tail);
 }
 
-char		*parameter_expand(char *input, char **env)
+static char		*parameter_expand(char *input, char **env)
 {
 	char			*var;
 	char			*result;
@@ -71,7 +71,7 @@ char		*parameter_expand(char *input, char **env)
 	return (result);
 }
 
-char	*replace_by_home(char *input, char **env)
+static char	*replace_by_home(char *input, char **env)
 {
 	int		i;
 	char		*path;
@@ -96,17 +96,6 @@ char	*replace_by_home(char *input, char **env)
 	return (path);
 }
 
-char		*my_strcdel_free(char *str, int i)
-{
-	char	*head;
-
-	head = my_strndup(str, i);
-	if (str[i + 1])
-		head = my_strjoin_free(head, str + i + 1);
-	free(str);
-	return (head);
-}
-
 static char	*get_param(char *input, int i, char **env)
 {
 	char	*head;
@@ -116,6 +105,8 @@ static char	*get_param(char *input, int i, char **env)
 	if (i > 0)
 		head = my_strndup(input, i);
 	expanded = parameter_expand(input + i, env);
+	if (expanded == NULL && head == NULL)
+		return (input);
 	free(input);
 	if (expanded == NULL)
 		return (head);
@@ -134,19 +125,23 @@ char		*extand(char *input, char **env)
 
 	i = 0;
 	quotes = 0;
+		if (input[i] == '~' && i == 0)
+			input = replace_by_home(input, env);
 	while (input && input[i])
 	{
 		if ((input[i] == '\'' || input[i] == '\"') && \
 			(quotes == 0 || quotes == input[i]))
 		{
 			quotes = ((quotes == 0) ? input[i] : 0);
-			input = my_strcdel_free(input, i);
+			input = my_strcdel(input, i);
 			i--;
 		}
-		if (input[i] == '~' && i == 0)
-			input = replace_by_home(input, env);
 		if (input[i] == '$' && input[i + 1] && quotes != '\'')
+		{
 			input = get_param(input, i, env);
+			if ((int)my_strlen(input) <= i)
+				return (input);
+		}
 		i++;
 	}
 	return (input);

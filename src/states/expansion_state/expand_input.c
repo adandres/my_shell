@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:10:10 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 16:27:07 by adandres                                 */
+/*   Updated: 2020/04/19 02:08:25 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	expand_token(t_list **token_list)
 	while (list)
 	{
 		token = list->content;
+		if (token->type / 10 == REDIR)
 		token = expand(token);
 		list->content = token;
 		list = list->next;

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 23:21:25 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 19:15:54 by adandres                                 */
+/*   Updated: 2020/04/19 02:08:32 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	pass(char *input, int type)
 	return (i);
 }
 
-t_redir		*get_redir(char *input, int type)
+static t_redir		*get_redir(char *input, int type)
 {
 	t_redir *redir;
 
@@ -59,7 +59,7 @@ t_redir		*get_redir(char *input, int type)
 	return (redir);
 }
 
-t_token		*expand_redir(t_token *token)
+t_token		*expand(t_token *token)
 {
 	t_redir		*redir;
 	char		*input;
@@ -75,12 +75,5 @@ t_token		*expand_redir(t_token *token)
 	}
 	token->data = redir;
 	free(input);
-	return (token);
-}
-
-t_token		*expand(t_token *token)
-{
-	if (token->type / 10 == REDIR)
-		token = expand_redir(token);
 	return (token);
 }

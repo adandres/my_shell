@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   main.c                                          /       \.'`  `',.--//   */
+/*   exec_builtin.c                                  /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/04/06 17:12:02 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 16:11:53 by adandres                                 */
+/*   Created: 2020/04/19 13:26:48 by adandres               /    /  /         */
+/*   Updated: 2020/04/21 17:48:57 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-int	main(int ac, char **av, char **env)
-{
-	t_state			*machine;
-	static void		(*state_func[5])(t_state **) = { \
-				&read_input, &parse_input, \
-				&expand_input, &build_state, &execute_tree};
+void		free_leaf(t_cmd *cmd);
 
-	if (!(machine = start_machine(ac, av, env)))
-		return (1);
-	if (machine->file_fd != -1)
-		state_func[READ] = &read_file;
-	while (machine->state != END)
-	{
-		(state_func[machine->state])(&machine);
-	}
-	free_all(machine);
+int		exec_builtin(t_state **machine, t_cmd *cmd)
+{
+	static int	(*builtin_func[7])(char **argv, t_state **machine) = \
+	{&exit_prog, &ft_echo, &change_directory, \
+		&my_env, &my_unsetenv, &my_set, &my_export};
+
+
+	(*machine)->status = (builtin_func[cmd->builtin])(cmd->argv, machine);
 	return (0);
 }

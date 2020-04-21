@@ -6,37 +6,11 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:16:43 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 19:18:48 by adandres                                 */
+/*   Updated: 2020/04/21 18:57:20 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
-
-/*static void	swap(void **a, void **b)
-{
-	void *tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-
-void	prendre_tab(char **tab)
-{
-	int	i;
-
-	i = 1;
-	while (tab[i + 1])
-	{
-		if (my_strcmp(tab[i], tab[i + 1]) < 0)
-		{
-			swap((void**)&tab[i], (void**)&tab[i + 1]);
-			i = 1;
-		}
-		else
-			i++;
-	}
-}*/
 
 char	**merge_tabs(char **tab, int i, char **to_add)
 {
@@ -82,7 +56,7 @@ int	is_quoted(char *str)
 	return (quoted);
 }
 
-t_cmd	*get_cmd_data(t_cmd *arg, char **env)
+void	get_cmd_data(t_ast **root, char **env)
 {
 	t_cmd	*cmd;
 	char	**argv;
@@ -91,8 +65,8 @@ t_cmd	*get_cmd_data(t_cmd *arg, char **env)
 	int	i;
 
 	i = 0;
-	arg->path = NULL;
-	argv = my_tabdup(arg->argv);
+	cmd = (*root)->data;
+	argv = my_tabdup(cmd->argv);
 	while (argv[i] != NULL)
 	{
 		quoted = is_quoted(argv[i]);
@@ -105,10 +79,12 @@ t_cmd	*get_cmd_data(t_cmd *arg, char **env)
 		}
 		i++;
 	}
-	cmd = (t_cmd*)malloc(sizeof(t_cmd));
-	cmd->path = get_cmd_path(argv[0], env);
-	cmd->argv = my_tabdup(argv);
-	cmd->builtin = arg->builtin;
-	free_tab(argv);
-	return (cmd);
+	free_tab(cmd->argv);
+	if ((*root)->type == CMD && argv[0])
+	{
+		if (!(cmd->path = get_cmd_path(argv[0], env)))
+			(*root)->type = NUL;
+	}
+	cmd->argv = argv;
+	(*root)->data = cmd;
 }

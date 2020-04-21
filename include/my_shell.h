@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:43 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 00:55:45 by adandres                                 */
+/*   Updated: 2020/04/21 15:56:10 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <sys/wait.h>
 # include <sys/ioctl.h>
 # include <sys/stat.h>
+# include <dirent.h>
 # include <errno.h>
 # include <signal.h>
 # include <stdio.h>
@@ -104,6 +105,7 @@ typedef struct		s_state
 	int		status;
 	int		easter_egg;
 	int		is_debug;
+	int		count;
 }			t_state;
 
 
@@ -130,7 +132,7 @@ char		*get_cmd_path(char *command, char **env);
 void		print_tree(t_ast *root, int level);
 
 void		exec_loop(t_ast *root, t_state **machine, t_return **ret, int r_type);
-void		redir(t_ast *root, t_ast *r_file, t_return **ret, int type);
+void		exec_redir(t_ast *root, t_ast *r_file, t_return **ret, int type);
 void		exec_cmd(t_ast *root, t_state *machine, t_return **ret, int r_type);
 
 int		my_unsetenv(char **argv, t_state **machine);
@@ -151,16 +153,22 @@ int		my_tablen(char **tab);
 char		**my_tabdup(char **tab);
 void		print_tab(char **tab);
 
-int		exec_builtin(t_state **machine, t_cmd *cmd, int build);
+int		exec_builtin(t_state **machine, t_cmd *cmd);
 char		*re_read_input(void);
 void		reset(t_state *machine);
-void		free_all(t_state *machine);
 
-int		my_strichr(char *str, char to_find);
 char		*extand(char *input, char **env);
-t_cmd		*get_cmd_data(t_cmd *arg, char **env);
+void		get_cmd_data(t_ast **root, char **env);
 t_token		*create_token(char *input, int type);
 int		check_special_char(char c);
+
 void		free_tlist(t_list *list);
+void		free_leaf(t_cmd *cmd);
+void		free_all(t_state *machine);
+
+void		no_mem_error(void);
+void		print_no_found(t_cmd * cmd);
+void		print_token_error(char c);
+int		check_broke_char(char c);
 
 #endif

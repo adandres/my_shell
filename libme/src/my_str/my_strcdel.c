@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   my_isprint.c                                    /       \.'`  `',.--//   */
+/*   my_strcdel.c                                    /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/03/16 11:27:00 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 16:45:27 by adandres                                 */
+/*   Created: 2020/04/19 02:03:52 by adandres               /    /  /         */
+/*   Updated: 2020/04/19 02:05:02 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		my_isprint(int c)
+#include "my_str.h"
+
+char		*my_strcdel(char *str, int i)
 {
-	if ((c >= 32 && c <= 126) || c < 0)
-		return (1);
-	return (0);
+	char	*head;
+
+	head = my_strndup(str, i);
+	if (str[i + 1])
+		head = my_strjoin_free(head, str + i + 1);
+	free(str);
+	return (head);
 }

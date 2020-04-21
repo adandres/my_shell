@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/16 16:45:34 by adandres               /    /  /         */
-/*   Updated: 2020/04/17 22:42:18 by adandres                                 */
+/*   Updated: 2020/04/20 19:02:41 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ int				my_set(char **argv, t_state **machine)
 
 	env = NULL;
 	i = 1;
-	if (env)
+	if ((*machine)->my_env)
 		env = my_tabdup((*machine)->my_env);
 	while (argv[i])
 	{
-		if (my_strichr(argv[i], '='))
+		printf("arg: %s\n", argv[i]);
+		if (my_strichr(argv[i], '=') >= 0)
 			env = add_new_env(argv[i], env);
 		i++;
 	}

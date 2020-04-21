@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   main.c                                          /       \.'`  `',.--//   */
+/*   error.c                                         /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/04/06 17:12:02 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 16:11:53 by adandres                                 */
+/*   Created: 2020/04/19 16:05:09 by adandres               /    /  /         */
+/*   Updated: 2020/04/20 22:00:07 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-int	main(int ac, char **av, char **env)
+void	no_mem_error(void)
 {
-	t_state			*machine;
-	static void		(*state_func[5])(t_state **) = { \
-				&read_input, &parse_input, \
-				&expand_input, &build_state, &execute_tree};
+	my_putendl("Cannot allocate memory");
+	exit(EXIT_FAILURE);
+}
 
-	if (!(machine = start_machine(ac, av, env)))
-		return (1);
-	if (machine->file_fd != -1)
-		state_func[READ] = &read_file;
-	while (machine->state != END)
-	{
-		(state_func[machine->state])(&machine);
-	}
-	free_all(machine);
-	return (0);
+void	print_no_found(t_cmd *cmd)
+{
+	fprintf(stderr, "shell: %s: command not found\n", cmd->argv[0]);
+}
+
+void	print_token_error(char c)
+{
+	if (c != '\n' && c)
+		fprintf(stderr, "shell: syntax error near unexpected token `%c'\n", c);
+	else
+		fprintf(stderr, "shell: syntax error near unexpected token `newline'\n");
 }

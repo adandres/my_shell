@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 19:41:57 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 01:03:52 by adandres                                 */
+/*   Updated: 2020/04/20 22:05:02 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ static t_token		*ret_land(char *input)
 int	get_token(t_token **token, char *input, int last)
 {
 	int		i;
-	t_token		*(*func[4])(char*) = {&ret_semi, &ret_pipe, &ret_lor, &ret_land};
-	
+	t_token		*(*func[4])(char*) = {&ret_semi, &ret_pipe, \
+			&ret_lor, &ret_land};
+
 	i = 0;
 	*token = NULL;
 	while (*token == NULL && i < 4)

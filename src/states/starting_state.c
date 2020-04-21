@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:13:38 by adandres               /    /  /         */
-/*   Updated: 2020/04/16 19:30:08 by adandres                                 */
+/*   Updated: 2020/04/21 17:03:36 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ t_state	*start_machine(int argc, char **argv, char **env)
 	machine->file_fd = -1;
 	machine->status = 0;
 	machine->easter_egg = 0;
-	machine->is_debug = 0;
+	machine->is_debug = 1;
 	machine->tree = NULL;
 	machine->cmd = NULL;
 	machine->my_env = NULL;
 	machine->token_list = NULL;
+	machine->count = 0;
 	if (env && env[0])
 		machine->my_env = my_tabdup(env);
 	//machine->my_env = set_env(env);

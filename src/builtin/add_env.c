@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 18:27:48 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 19:07:16 by adandres                                 */
+/*   Updated: 2020/04/20 19:34:03 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ char	**reeeee(char *src, char **env, int index)
 	return (env);
 }
 
-char	**my_stradd_tab(char *src, char **tab)
+char	**my_tab_add_str(char *src, char **tab)
 {
 	int		len;
 	char		**new_tab;
-	
+
 	len = my_tablen(tab);
 	if (!(new_tab = (char**)realloc(tab, sizeof(char*) * (len + 2))))
 		return (NULL);
@@ -41,7 +41,7 @@ char		**add_new_env(char *new, char **env)
 	name = get_name(new);
 	index = env_index(env, name);
 	if (index < 0)
-		new_env = my_stradd_tab(new, env);
+		new_env = my_tab_add_str(new, env);
 	else
 		new_env = reeeee(new, env, index);
 	free(name);

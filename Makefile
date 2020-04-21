@@ -6,13 +6,13 @@
 #    By: adandres                                    \       /'.____.'\___|    #
 #                                                     '-...-' __/ | \   (`)    #
 #    Created: 2020/04/06 17:14:21 by adandres               /    /  /          #
-#    Updated: 2020/04/19 01:02:06 by adandres                                  #
+#    Updated: 2020/04/21 14:57:10 by adandres                                  #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = my_shell
 CC = gcc
-FLAGS = -Werror -Wextra -Wall
+FLAGS = -Wextra -Wall
 VPATH = src: \
 	src/states: \
 	src/states/parsing_state: \
@@ -22,13 +22,13 @@ VPATH = src: \
 	src/builtin \
 	src/utils
 
-SRC = starting_state.c read_input.c read_file.c parse_input.c \
+SRC =	starting_state.c read_input.c read_file.c parse_input.c \
 	get_token.c check_redir.c reverse_redir.c first_is_cmd.c sort_list.c \
 	build_tree.c expand_input.c create_branch.c get_env_var.c get_cmd_path.c \
-	print_tree.c execute_tree.c redir.c exec.c expands.c main.c tab.c \
+	print_tree.c execute_tree.c exec_redir.c exec_cmd.c expands.c main.c tab.c \
 	change_directory.c env_index.c my_env.c my_unsetenv.c echo.c my_set.c \
 	free.c my_export.c add_env.c extend.c get_cmd_data.c relaunch.c \
-	get_word.c utils_parse.c
+	get_word.c utils_parse.c exec_loop.c exec_builtin.c error.c
 
 H_PATH = include
 O_PATH = obj

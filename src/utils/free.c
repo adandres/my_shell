@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/15 12:17:28 by adandres               /    /  /         */
-/*   Updated: 2020/04/17 20:11:33 by adandres                                 */
+/*   Updated: 2020/04/21 14:32:29 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@ void	free_tlist(t_list *token_list)
 	t_list *next;
 	t_token *token;
 
+	if (token_list == NULL)
+		return;
 	while (token_list)
 	{
 		token = token_list->content;
-		free(token->data);
-		free(token);
+		if (token->data)
+			free(token->data);
+		if (token)
+			free(token);
 		next = token_list->next;
 		free(token_list);
 		token_list = next;
@@ -37,6 +41,7 @@ void	free_leaf(t_cmd *cmd)
 	if (cmd->argv)
 		free_tab(cmd->argv);
 	free(cmd);
+
 }
 
 void	free_tree(t_ast *tree)
@@ -45,7 +50,7 @@ void	free_tree(t_ast *tree)
 		return ;
 	if (tree->left)
 		free_tree(tree->left);
-	if (tree->type == BUILT || tree->type == CMD)
+	if (tree->type == BUILT || tree->type == CMD || tree->type == NUL)
 		free_leaf(tree->data);
 	if (tree->right)
 		free_tree(tree->right);
@@ -53,9 +58,12 @@ void	free_tree(t_ast *tree)
 	tree = NULL;
 }
 
+
+
 void	reset(t_state *machine)
 {
-	free(machine->cmd);
+	if (machine->cmd)
+		free(machine->cmd);
 	free_tree(machine->tree);
 	free_tlist(machine->token_list);
 }

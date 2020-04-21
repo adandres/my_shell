@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:14:11 by adandres               /    /  /         */
-/*   Updated: 2020/04/17 20:04:08 by adandres                                 */
+/*   Updated: 2020/04/21 17:50:46 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,22 @@
 t_ast   *parse_cmd(t_state *machine);
 t_ast	*create_branch(t_list *token_list, int state, t_state *machine);
 
-t_token		*copy_token(t_token *token)
+static	void	free_list_only(t_list *list)
+{
+	t_list *node;
+	t_list *temp;
+
+	node = list;
+	while (node != NULL)
+	{
+		temp = node;
+		node = node->next;
+		free(temp);
+	}
+	list = NULL;
+}
+
+static t_token		*copy_token(t_token *token)
 {
 	t_token		*new;
 
@@ -26,12 +41,12 @@ t_token		*copy_token(t_token *token)
 	return (new);
 }
 
-void	add_list(t_list **tail, t_list *head)
+static void	add_list(t_list **tail, t_list *head)
 {
 	t_list *tmp;
 
 	tmp = (t_list*)malloc(sizeof(t_list));
-	tmp->content = copy_token(head->content);
+	tmp->content = head->content;
 	tmp->next = *tail;
 	*tail = tmp;
 }
@@ -43,23 +58,9 @@ static int check(t_token *token, int state)
 	return (0);
 }
 
+static t_ast	*build_tree(t_list *token_list, int state, t_state *machine);
 
-
-void	free_list(t_list *list)
-{
-	t_list *next;
-
-	while (list)
-	{
-		next = list->next;
-		free(list->content);
-		free(list);
-		list = next;
-	}
-}
-t_ast	*build_tree(t_list *token_list, int state, t_state *machine);
-
-t_ast	*get_root(t_list *head, t_list *tail, int state, t_state *machine)
+static t_ast	*get_root(t_list *head, t_list *tail, int state, t_state *machine)
 {
 	t_ast	*root;
 	
@@ -76,13 +77,11 @@ t_ast	*get_root(t_list *head, t_list *tail, int state, t_state *machine)
 		else
 			root->right = NULL;
 	}
-	if (tail)
-	free_list(tail);
+	free_list_only(tail);
 	return (root);
-
 }
 
-t_ast	*build_tree(t_list *token_list, int state, t_state *machine)
+static t_ast	*build_tree(t_list *token_list, int state, t_state *machine)
 {
 	t_ast		*root;
 	t_list		*head;
@@ -101,10 +100,9 @@ t_ast	*build_tree(t_list *token_list, int state, t_state *machine)
 		add_list(&tail, head);
 		head = head->next;
 	}
-	if (tail)
-	free_list(tail);
 	if (state < COMMAND)
 		root = build_tree(token_list, state + 1, machine);
+	free_list_only(tail);
 	return (root);
 }
 

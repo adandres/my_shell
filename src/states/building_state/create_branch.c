@@ -6,19 +6,36 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:21:33 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 19:45:05 by adandres                                 */
+/*   Updated: 2020/04/21 14:37:44 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-int			builtin(char *input)
+static int		is_set(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i] != '=')
+	{
+		if (my_isalpha(input[i]) || input[i] == '_')
+			i++;
+		else
+			return (0); 
+	}
+	if (input[i] == '=' && i != 0)
+		return (1);
+	return (0);
+}
+
+static int		builtin(char *input)
 {
 	if (my_strcmp(input, "cd") == 0)
 		return (CD);
 	if (my_strcmp(input, "unset") == 0)
 		return (UNSET);
-	if (my_strcmp(input, "set") == 0 || my_strchr(input, '='))
+	if (my_strcmp(input, "set") == 0 || is_set(input))
 		return (SET);
 	if (my_strcmp(input, "env") == 0)
 		return (ENV);
@@ -31,7 +48,7 @@ int			builtin(char *input)
 	return (-1);
 }
 
-t_ast	*create_node(void *data, int state)
+static t_ast	*create_node(void *data, int state)
 {
 	t_ast		*new;
 
@@ -43,7 +60,7 @@ t_ast	*create_node(void *data, int state)
 	return (new);
 }
 
-char	**grep_argv(t_list *token_list)
+static char	**grep_argv(t_list *token_list)
 {
 	t_token *token;
 	char **argv;
@@ -64,18 +81,21 @@ char	**grep_argv(t_list *token_list)
 	return (argv);
 }
 
-t_ast	*create_func_node(t_list *token_list)
+static t_ast	*create_func_node(t_list *token_list)
 {
 	t_cmd		*cmd;
 	t_ast		*new;
+	int		type;
 
 	new = NULL;
+	type = CMD;
 	my_lst_reverse(&token_list);
 	cmd = (t_cmd*)malloc(sizeof(t_cmd));
 	cmd->argv = grep_argv(token_list);
 	cmd->path = NULL;
-	cmd->builtin = builtin(cmd->argv[0]);
-	new = create_node(cmd, CMD);
+	if ((cmd->builtin = builtin(cmd->argv[0])) >= 0)
+		type = BUILT;
+	new = create_node(cmd, type);
 	my_lst_reverse(&token_list);
 	return (new);
 }

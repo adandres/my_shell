@@ -6,20 +6,50 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:29:16 by adandres               /    /  /         */
-/*   Updated: 2020/04/17 19:19:18 by adandres                                 */
+/*   Updated: 2020/04/21 14:34:34 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
+static int	is_dir(char *path)
+{
+	DIR		*is_dir;
+	char		*test_path;
+	int		len;
+
+	len = my_strlen(path);
+	test_path = my_strjoin(path ,"/");
+	is_dir = opendir(test_path);
+	if (is_dir != NULL)
+	{
+		free(test_path);
+		closedir(is_dir);
+		return (1);
+	}
+	free(test_path);
+	if (len == 1 && (path[0] == '.' || path[0] == '/' || path[0] == '\\' || path[0] == '~'))
+		return (1);
+	return (0);
+}
+
+static int	is_exec_file(char *path)
+{
+
+	if (is_dir(path))
+		return (0);
+	if (access(path, X_OK) != 0)
+		return (0);
+	return (1);
+}
+
 char		*path_explore(char *path, char *input)
 {
 	char		*cmd_path;
 
-
 	cmd_path = my_strjoin(path, "/");
 	cmd_path = my_strjoin_free(cmd_path, input);
-	if (access(cmd_path, F_OK) == 0)
+	if (is_exec_file(cmd_path))
 		return (cmd_path);
 	free(cmd_path);
 	return (NULL);
@@ -48,8 +78,11 @@ static char	*get_path(char *input, char **env)
 	char	*path_list;
 	char	*path;
 
-	if (access(input, X_OK) == 0)
-		return (input);
+	path = NULL;
+	if (is_dir(input) == 1)
+		return (NULL);
+	if (is_exec_file(input))
+		return (my_strdup(input));
 	if (env == NULL)
 		return (NULL);
 	path_list = get_env_var(env, "PATH");

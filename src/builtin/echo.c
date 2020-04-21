@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 21:56:22 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 18:28:29 by adandres                                 */
+/*   Updated: 2020/04/19 16:14:26 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ int		exit_prog(char **argv, t_state **machine)
 {
 	int		i;
 
-	i = 1;
-	while (argv[i])
+	i = 0;
+	while (argv && argv[i])
 		i++;
 	if (i > 2)
 	{
 		my_putendl("Error: too many arguments");
 		return (1);
 	}
-	argv = NULL;
-	free_all(*machine);
+	*machine = NULL;
+	//free_all(*machine);
 	exit(127);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/03/17 14:53:16 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 19:42:26 by adandres                                 */
+/*   Updated: 2020/04/19 02:16:15 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ t_list		*my_lst_push_tab(char **av);
 void		my_lst_reverse(t_list **begin_list);
 int		my_lst_len(t_list *list);
 t_list		*my_lst_pass(t_list *list, int n);
+void		my_lst_free(t_list *list);
 
 #endif

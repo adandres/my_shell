@@ -6,7 +6,7 @@
 #    By: adandres                                    \       /'.____.'\___|    #
 #                                                     '-...-' __/ | \   (`)    #
 #    Created: 2020/03/16 11:52:14 by adandres               /    /  /          #
-#    Updated: 2020/04/18 19:42:50 by adandres                                  #
+#    Updated: 2020/04/19 02:15:50 by adandres                                  #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,13 +26,14 @@ SRC = my_putchar.c my_putendl.c my_putnbr.c my_putstr.c my_putchar_fd.c \
 	my_strclr.c my_striter.c my_strmapi.c my_strnstr.c my_strtoupper.c \
 	my_strcmp.c my_striteri.c my_strncat.c my_strrchr.c my_strtolower.c \
 	my_strcpy.c my_strjoin.c my_strncmp.c my_strsplit.c \
-	my_strdel.c my_strlcat.c my_strncpy.c my_strstr.c \
+	my_strdel.c my_strlcat.c my_strncpy.c my_strstr.c my_strcdel.c\
 	my_lst_add.c my_lst_push_tab.c my_lst_new.c my_lst_reverse.c \
 	my_tolower.c my_toupper.c my_itoa.c my_atoi.c my_uitoa_base.c \
 	my_uitoa.c my_printf.c parse_padding.c print_format.c print_init.c \
 	get_dec.c get_specifier.c get_udec.c utils.c parse_lenght.c get_addr.c \
 	get_next_line.c my_strndup.c my_strjoin_free.c my_realloc.c \
-	my_strjoin_tab.c my_strichr.c my_memswap.c my_lst_len.c my_lst_pass.c
+	my_strjoin_tab.c my_strichr.c my_memswap.c my_lst_len.c my_lst_pass.c \
+	my_lst_free.c
 
 H_PATH = include
 O_PATH = obj

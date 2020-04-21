@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/03/16 19:07:35 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 19:30:44 by adandres                                 */
+/*   Updated: 2020/04/19 02:05:08 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,6 @@ char			*my_strjoin_free(char *s1, char *s2);
 char			**my_strsplit(const char *str, char c);
 int			my_strichr(char *str, char to_find);
 char			*my_strjoin_tab(char **tab, char *del);
+char			*my_strcdel(char *str, int i);
+
 #endif

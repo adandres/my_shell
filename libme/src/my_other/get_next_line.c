@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 18:36:40 by adandres               /    /  /         */
-/*   Updated: 2020/04/06 18:52:19 by adandres                                 */
+/*   Updated: 2020/04/21 18:38:17 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,6 @@ char			*ft_free(char **s1, int i)
 
 	tmp = my_strdup(*s1 + i + 1);
 	free(*s1);
-	return (tmp);
-}
-
-char			*my_strjoin_free(char *s1, char *s2)
-{
-	char	*tmp;
-
-	tmp = my_strjoin(s1, s2);
-	free(s1);
 	return (tmp);
 }
 

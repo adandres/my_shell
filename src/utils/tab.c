@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 22:07:02 by adandres               /    /  /         */
-/*   Updated: 2020/04/17 19:13:22 by adandres                                 */
+/*   Updated: 2020/04/20 20:47:13 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,13 @@ void		free_tab(char **tab)
 	int i;
 	
 	i = 0;
+	if (tab == NULL)
+		return;
 	while (tab[i])
-		free(tab[i++]);
+	{
+		free(tab[i]);
+		i++;
+	}
 	free(tab);
 }
 
