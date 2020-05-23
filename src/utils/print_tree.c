@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 21:16:54 by adandres               /    /  /         */
-/*   Updated: 2020/04/14 23:20:06 by adandres                                 */
+/*   Updated: 2020/05/17 16:29:12 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,26 @@ void	print_tree(t_ast *root, int level)
 
 	if (root == NULL)
 	{
-		padding ('\t', level);
+		padding ('\t', level + 1);
 		my_putendl("~");
 	}
 	else
 	{
-		if (root->type != CMD)
-			value = my_itoa(root->type);
-		else
+		if (root->type == CMD)
 		{
 			cmd = (t_cmd*)root->data;
 			tab = cmd->argv;
 			value = tab[0];
 		}
+		else if (root->type / 10 != REDIR)
+			value = root->data;
+		else
+			value = my_itoa(root->type);
 		print_tree(root->right, level + 1);
-		padding('\t', level);
+		padding('\t', level + 1);
 		my_printf("%s\n", value);
 		print_tree(root->left, level + 1);
-		if (root->type != CMD)
+		if (root->type / 10 == REDIR)
 			free(value);
 	}
 }

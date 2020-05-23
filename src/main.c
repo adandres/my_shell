@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:02 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 16:11:53 by adandres                                 */
+/*   Updated: 2020/05/23 19:10:55 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 int	main(int ac, char **av, char **env)
 {
+	int			fd;
 	t_state			*machine;
-	static void		(*state_func[5])(t_state **) = { \
+	static void		(*state_func[4])(t_state **) = { \
 				&read_input, &parse_input, \
-				&expand_input, &build_state, &execute_tree};
+				&build_state, &execute_tree};
 
 	if (!(machine = start_machine(ac, av, env)))
 		return (1);
@@ -26,7 +27,11 @@ int	main(int ac, char **av, char **env)
 	while (machine->state != END)
 	{
 		(state_func[machine->state])(&machine);
-	}
+	}	
+	fd = open(".my_shell_history", O_WRONLY, O_APPEND);
+	machine->history = my_tab_reverse(machine->history);
+	print_tab_fd(machine->history, fd);
+	close(fd);
 	free_all(machine);
 	return (0);
 }

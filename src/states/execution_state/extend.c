@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:13:50 by adandres               /    /  /         */
-/*   Updated: 2020/04/21 19:08:59 by adandres                                 */
+/*   Updated: 2020/04/22 17:31:06 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,83 +54,103 @@ static char	*get_truc(char *input)
 
 static char		*parameter_expand(char *input, char **env)
 {
-	char			*var;
-	char			*result;
-	char			*tail;
+	char	*var;
+	char	*result;
 
-	tail = get_tail(input + 1);
 	if (!(var = get_truc(input + 1)))
-		return (tail);
+		return (NULL);
 	result = get_var_env(env, var);
 	free(var);
-	if (result == NULL)
-		return (tail);
-	if (tail)
-		result = my_strjoin_free(result, tail);
-	free(tail);
 	return (result);
 }
 
-static char	*replace_by_home(char *input, char **env)
+int	replace_by_home(char **input, char **env)
 {
-	int		i;
 	char		*path;
 	char		*tail;
+	int		len;
 
-	i = 0;
+	len = 0;
 	tail = NULL;
-	while (input[i] != '~')
-		i++;
-	if (input[i + 1])
+	if ((*input)[1])
 	{
-		if (input[i + 1] != '/')
-			return (input);
-		tail = my_strdup(input + i + 1);
+		if ((*input)[1] != '/')
+			return (0);
+		tail = my_strdup(*input + 1);
 	}
 	path = get_var_env(env, "HOME");
-	if (tail != NULL)
+	if (path)
+		len = my_strlen(path);
+	if (tail && path)
 		path = my_strjoin_free(path, tail);
-	free(input);
+	if (tail && path == NULL)
+		path = my_strdup(tail);
 	if (tail)
 		free(tail);
-	return (path);
+	free(*input);
+	*input = path;
+	return (len);
 }
 
-static char	*get_param(char *input, int i, char **env)
+int	get_param(char *input, char **extended, char **env)
 {
+	char	*tail;
+	int	len;
+
+	len = 0;
+	tail = get_tail(input + 1);
+	*extended = parameter_expand(input, env);
+	if (*extended)
+		len = my_strlen(*extended);
+	if (tail)
+	{
+		if (*extended)
+			*extended = my_strjoin_free(*extended, tail);
+		else
+			*extended = my_strdup(tail);
+		free(tail);
+	}
+	return (len);
+}
+
+static int	extent(char **input, int i, char **env)
+{
+	char	*extended;
 	char	*head;
-	char	*expanded;
+	int	len;
 
 	head = NULL;
-	if (i > 0)
-		head = my_strndup(input, i);
-	expanded = parameter_expand(input + i, env);
-	if (expanded == NULL && head == NULL)
-		return (input);
-	free(input);
-	if (expanded == NULL)
-		return (head);
-	if (head)
-		head = my_strjoin_free(head, expanded);
+	if (i != 0)
+		head = my_strndup(*input, i);
+	len = get_param(*input + i, &extended, env);
+	free(*input);
+	*input = head;
+	if (head && extended)
+		*input = my_strjoin_free(head, extended);
+	else if (extended)
+		*input = my_strdup(extended);
 	else
-		head = my_strdup(expanded);
-	free(expanded);
-	return (head);
+		return (-1);
+	if (extended)
+		free(extended);
+	return (len);
 }
 
-char		*extand(char *input, char **env)
+char		*extand(char *to_ext, char **env)
 {
 	int	i;
 	int	quotes;
+	char	*input;
 
 	i = 0;
 	quotes = 0;
-		if (input[i] == '~' && i == 0)
-			input = replace_by_home(input, env);
+	input = my_strdup(to_ext);
+	if (input[0] == '~')
+		i = replace_by_home(&input, env);
 	while (input && input[i])
 	{
 		if ((input[i] == '\'' || input[i] == '\"') && \
-			(quotes == 0 || quotes == input[i]))
+				(quotes == 0 || quotes == input[i]))
 		{
 			quotes = ((quotes == 0) ? input[i] : 0);
 			input = my_strcdel(input, i);
@@ -138,11 +158,11 @@ char		*extand(char *input, char **env)
 		}
 		if (input[i] == '$' && input[i + 1] && quotes != '\'')
 		{
-			input = get_param(input, i, env);
-			if ((int)my_strlen(input) <= i)
-				return (input);
+			if ((i += extent(&input, i, env)) == -1)
+				return (NULL);
 		}
-		i++;
+		else
+			i++;
 	}
 	return (input);
 }

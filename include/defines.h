@@ -6,12 +6,20 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:23:42 by adandres               /    /  /         */
-/*   Updated: 2020/04/16 20:15:54 by adandres                                 */
+/*   Updated: 2020/05/19 20:23:16 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINES_H
 # define DEFINES_H
+
+# define ARROW_UP		"\033[A"
+# define ARROW_LEFT		"\033[D"
+# define ARROW_DOWN		"\033[B"
+# define ARROW_RIGHT		"\033[C"
+# define HIDE_CURSOR	"\033[?25l"
+# define SHOW_CURSOR	"\033[?25h"
+
 
 /*
  ** Boolean
@@ -26,11 +34,10 @@
  */
 # define READ		0
 # define PARSE		1
-# define EXPAND 	2
-# define BUILD		3
-# define EXEC		4
-# define END		5
-# define ERROR		6
+# define BUILD		2
+# define EXEC		3
+# define END		4
+# define ERROR		5
 
 # define EXIT       0
 # define BECHO      1
@@ -45,26 +52,28 @@
  */
 # define SEMI		0
 # define LOGIC		1
-# define REDIR		2
-# define COMMAND	3
+//# define PI		2
+# define PIPE		20
+# define REDIR		3
+# define COMMAND	4
 # define L_AND		10
 # define L_OR		11
-# define R_OUT		21
-# define RA_OUT		22
-# define R_IN		23
-# define R_DOC		24
-# define R_ER		25
-# define R_RW		26
-# define R_CP		27
-# define R_ICL		28
-# define R_OCL		29
-# define WORD		30
-# define CMD		31
-# define BUILT		32
-# define ARG		33
-# define FILENAME	34
-# define VAR		35
-# define PIPE		40
+# define R_OUT		31
+# define RA_OUT		32
+# define R_IN		33
+# define R_DOC		34
+# define R_ER		35
+# define R_RW		36
+# define R_CP		37
+# define R_ICL		38
+# define R_OCL		39
+# define WORD		40
+# define CMD		41
+# define BUILT		42
+# define ARG		43
+# define FILENAME	44
+# define VAR		45
+//# define PIPE		40
 # define NUL		9
 
 /*
@@ -107,10 +116,16 @@ typedef struct termios	t_term;
 /*
  ** define termcaps values
  */
-# define DEL		127
-# define REV_DEL	51
-# define ESC		27
-# define CLEAR		12
+# define DEL			127
+# define REV_DEL		51
+# define ESC			27
+# define CLEAR			12
+# define TAB			9
+# define RIGHT_ARROW	'C'
+# define DOWN_ARROW		'B'
+# define UP_ARROW		'A'
+# define LEFT_ARROW		'D'
+# define EOT			4
 
 /*
  ** define ft_env options

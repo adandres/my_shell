@@ -6,14 +6,12 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:14:11 by adandres               /    /  /         */
-/*   Updated: 2020/04/21 17:50:46 by adandres                                 */
+/*   Updated: 2020/05/16 16:46:48 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-
-t_ast   *parse_cmd(t_state *machine);
 t_ast	*create_branch(t_list *token_list, int state, t_state *machine);
 
 static	void	free_list_only(t_list *list)
@@ -31,16 +29,6 @@ static	void	free_list_only(t_list *list)
 	list = NULL;
 }
 
-static t_token		*copy_token(t_token *token)
-{
-	t_token		*new;
-
-	new = (t_token*)malloc(sizeof(t_token));
-	new->data = token->data;
-	new->type = token->type;
-	return (new);
-}
-
 static void	add_list(t_list **tail, t_list *head)
 {
 	t_list *tmp;
@@ -51,9 +39,9 @@ static void	add_list(t_list **tail, t_list *head)
 	*tail = tmp;
 }
 
-static int check(t_token *token, int state)
+static int check_(t_token *token, int state)
 {
-	if ((token->type / 10) == state || (state == REDIR && token->type == PIPE))
+	if ((token->type / 10) == state/* || (state == REDIR && token->type == PIPE)*/)
 		return (1);
 	return (0);
 }
@@ -92,7 +80,7 @@ static t_ast	*build_tree(t_list *token_list, int state, t_state *machine)
 	root = NULL;
 	while (head != NULL)
 	{
-		if (check(head->content, state))
+		if (check_(head->content, state))
 		{
 			root = get_root(head, tail, state, machine);
 			return (root);

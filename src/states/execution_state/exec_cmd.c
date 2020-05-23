@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 21:38:34 by adandres               /    /  /         */
-/*   Updated: 2020/04/21 14:40:09 by adandres                                 */
+/*   Updated: 2020/05/18 20:32:00 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static void	check_red(t_return *ret)
 	i = 0;
 	while (i < ret->n_file)
 	{
-		if (ret->type[i] == R_IN || ret->type[i] == R_CP)
+		if (ret->type[i] == R_IN || ret->type[i] == R_CP \
+				|| ret->type[i] == R_DOC)
 			dup2(ret->file[i], ret->fd[i]);
 		if (ret->type[i] == R_ER)
 			dup2(ret->file[i], 2);
@@ -70,28 +71,52 @@ void	exec_cmd(t_ast *root, t_state *machine, t_return **ret, int r_type)
 	pid_t	pid;
 	t_ast	*leaf;
 
-	//pipe(p);
 	leaf = root;
+	pipe(p);
 	if (root->right)
 		leaf = root->right;
-	/*if ((pid = fork()) == -1)
+	if ((pid = fork()) == -1)
 		exit(EXIT_FAILURE);
 	if (pid == 0)
 	{
-		exit(EXIT_SUCCESS);
 		close(p[1]);
-		*/if (leaf->type == NUL)
+		if (leaf->type == NUL)
+		{
 			print_no_found(leaf->data);
-		/*check_red(*ret);
-		check_pipe(root->type, r_type, *ret, p);
-		exec_command(leaf->data, machine);
+			exit(EXIT_FAILURE);
+		}
+		if (leaf->type != R_DOC)
+			check_pipe(root->type, r_type, *ret, p);
+		if (leaf->type / 10 == REDIR)
+			exec_loop(leaf, &machine, ret, root->type);
+		else
+		{
+			check_red(*ret);
+			exec_command(leaf->data, machine);
+		}
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		store_stdout(ret, p);*/
-		if (root->type != CMD && root->left && root->type != NUL)
+		store_stdout(ret, p);
+		if (root->left)
 			exec_loop(root->left, &machine, ret, root->type);
-		/*close(p[1]);
+		close(p[1]);
 		wait(&(*ret)->status);
-	}*/
+	}
 }
+
+/*void	exec_cmd(t_ast *root, t_state *machine, t_return **ret, int r_type)
+{
+  int	p[2];
+  pid_t	pid;
+  t_ast	*leaf;
+
+  leaf = root;
+  if (root->right)
+  leaf = root->right;
+  if (leaf->type == NUL)
+  print_no_found(leaf->data);
+  if (root->type != CMD && root->left && root->type != NUL)
+  exec_loop(root->left, &machine, ret, root->type);
+}*/

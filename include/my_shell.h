@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:43 by adandres               /    /  /         */
-/*   Updated: 2020/04/21 15:56:10 by adandres                                 */
+/*   Updated: 2020/05/23 19:36:37 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,8 @@ typedef struct	s_redir
 	int	fd;
 	int	copy;
 	int	close;
+	int	hdoc;
 }		t_redir;
-
-typedef struct	s_var
-{
-	char *name;
-	char *value;
-}		t_var;
 
 typedef struct	s_return
 {
@@ -77,6 +72,7 @@ typedef struct	s_return
 	int		type[256];
 	int		status;
 	int		fd_out;
+	int		l_pid;
 }		t_return;
 
 typedef struct	s_ast
@@ -87,27 +83,31 @@ typedef struct	s_ast
 	struct s_ast	*right;
 }		t_ast;
 
-typedef struct	s_error
+typedef struct	s_hterm
 {
-	char	*message;
-	int	number;
-}		t_error;
+	char	**history;
+	char	*cmd;
+	char	*save;
+	int	pos;
+	int	h_len;
+	int	curs;
+	int	hist;
+	int	restart;
+	int	nrl;
+}		t_hterm;
 
 typedef struct		s_state
 {
 	char		*cmd;
 	char		**my_env;
+	char		**history;
 	t_list		*token_list;
 	t_ast		*tree;
-	t_states	state;
-	t_error		error;
+	int		state;
 	int		file_fd;
 	int		status;
-	int		easter_egg;
 	int		is_debug;
-	int		count;
 }			t_state;
-
 
 t_state		*start_machine(int argc, char **argv, char **env);
 
@@ -123,6 +123,7 @@ int		check_redir(t_token **token, char *input);
 void		reverse_redir(t_list **token_list);
 void		first_is_cmd(t_list **token_list);
 void		sort_list(t_list **token_list);
+void	assign_word(t_list **token_list);
 
 t_token		*expand(t_token *token);
 
@@ -132,7 +133,7 @@ char		*get_cmd_path(char *command, char **env);
 void		print_tree(t_ast *root, int level);
 
 void		exec_loop(t_ast *root, t_state **machine, t_return **ret, int r_type);
-void		exec_redir(t_ast *root, t_ast *r_file, t_return **ret, int type);
+int		exec_redir(t_ast *root, t_state *machine,  t_return **ret, int type);
 void		exec_cmd(t_ast *root, t_state *machine, t_return **ret, int r_type);
 
 int		my_unsetenv(char **argv, t_state **machine);
@@ -154,7 +155,8 @@ char		**my_tabdup(char **tab);
 void		print_tab(char **tab);
 
 int		exec_builtin(t_state **machine, t_cmd *cmd);
-char		*re_read_input(void);
+void		re_read_input(t_state **machine);
+void		re_read_file(t_state **machine);
 void		reset(t_state *machine);
 
 char		*extand(char *input, char **env);
@@ -162,6 +164,7 @@ void		get_cmd_data(t_ast **root, char **env);
 t_token		*create_token(char *input, int type);
 int		check_special_char(char c);
 
+void		free_token(t_token *token);
 void		free_tlist(t_list *list);
 void		free_leaf(t_cmd *cmd);
 void		free_all(t_state *machine);
@@ -171,4 +174,6 @@ void		print_no_found(t_cmd * cmd);
 void		print_token_error(char c);
 int		check_broke_char(char c);
 
+void		write_hdoc(t_state **machine);
+char		**my_tab_reverse(char **tab);
 #endif

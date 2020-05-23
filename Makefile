@@ -6,7 +6,7 @@
 #    By: adandres                                    \       /'.____.'\___|    #
 #                                                     '-...-' __/ | \   (`)    #
 #    Created: 2020/04/06 17:14:21 by adandres               /    /  /          #
-#    Updated: 2020/04/21 14:57:10 by adandres                                  #
+#    Updated: 2020/05/18 17:59:17 by adandres                                  #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,20 +15,22 @@ CC = gcc
 FLAGS = -Wextra -Wall
 VPATH = src: \
 	src/states: \
+	src/states/reading_state \
 	src/states/parsing_state: \
-	src/states/expansion_state \
+	src/states/parsing_state/sort/:\
 	src/states/building_state: \
-	src/states/execution_state \
-	src/builtin \
+	src/states/execution_state: \
+	src/builtin: \
 	src/utils
 
-SRC =	starting_state.c read_input.c read_file.c parse_input.c \
+SRC =	starting_state.c read_input.c read_file.c parse_input.c assign.c\
 	get_token.c check_redir.c reverse_redir.c first_is_cmd.c sort_list.c \
-	build_tree.c expand_input.c create_branch.c get_env_var.c get_cmd_path.c \
-	print_tree.c execute_tree.c exec_redir.c exec_cmd.c expands.c main.c tab.c \
+	build_tree.c create_branch.c get_env_var.c get_cmd_path.c \
+	print_tree.c execute_tree.c exec_redir.c exec_cmd.c main.c tab.c \
 	change_directory.c env_index.c my_env.c my_unsetenv.c echo.c my_set.c \
 	free.c my_export.c add_env.c extend.c get_cmd_data.c relaunch.c \
-	get_word.c utils_parse.c exec_loop.c exec_builtin.c error.c
+	get_word.c utils_parse.c exec_loop.c exec_builtin.c error.c sort.c \
+	parser.c expand_redir.c write_hdoc.c
 
 H_PATH = include
 O_PATH = obj

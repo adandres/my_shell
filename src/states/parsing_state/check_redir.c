@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 19:47:36 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 21:43:39 by adandres                                 */
+/*   Updated: 2020/04/23 17:27:05 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ static int	ret_in(t_token **token, char *input)
 		i++;
 	if (input[i] == '>')
 	{
-		if (check_special_char(input[i + 1]) == 1)
-		{
+		//if (check_special_char(input[i + 1]) == 1)
+		//{
 			*token = pet_token(my_strndup(input, i + 1), type);
 			return (i + 1);
-		}
+		//}
 	}
 	return (0);
 }
@@ -80,6 +80,7 @@ static int	sec_redir(t_token **token, char *input)
 	{
 		if (check_special_char(input[i + 1]) == 1)
 		{
+			i++;
 			*token = create_token(my_strndup(input, i), R_DOC);
 			return (i);
 		}
@@ -132,6 +133,24 @@ static int	is_redir(char *input)
 	return (1);
 }
 
+int	check_filename(char *input)
+{
+	int	i;
+
+	i = 0;
+	if (input == NULL)
+		return (0);
+	while (input[i])
+	{
+		if (check_special_char(input[i]) == 0)
+			return (0);
+		if (input[i] != ' ' && input[i] != '\t' && input[i] != '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int		check_redir(t_token **token, char *input)
 {
 	int len;
@@ -145,5 +164,13 @@ int		check_redir(t_token **token, char *input)
 		return (0);
 	while (len == 0 && i < 5)
 		len = func[i++](token, input);
+	if (len && (input[len - 1] == '<' || input[len - 1] == '>'))
+	{
+		if (check_filename(input + len) == 0)
+		{
+			print_token_error(input[len]);
+			return (-1);
+		}
+	}
 	return (len);
 }

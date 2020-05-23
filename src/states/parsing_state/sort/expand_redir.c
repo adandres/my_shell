@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   expands.c                                       /       \.'`  `',.--//   */
+/*   expand_redir.c                                  /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/04/07 23:21:25 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 02:08:32 by adandres                                 */
+/*   Created: 2020/04/22 17:55:22 by adandres               /    /  /         */
+/*   Updated: 2020/05/18 17:51:31 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	default_redir(int type)
 {
 	if (type == R_OUT || type == RA_OUT || type == R_ER || type == R_OCL)
 		return (1);
-	if (type == R_IN || type == R_RW || type == R_ICL)
+	if (type == R_IN || type == R_RW || type == R_ICL || type == R_DOC)
 		return (0);
 	return (-1);
 }
@@ -68,7 +68,8 @@ t_token		*expand(t_token *token)
 	input = token->data;
 	redir = get_redir(input, token->type);
 	i = pass(input, token->type);
-	if (input[i] && input[i] == '&' && token->type != R_ICL && token->type != R_OCL)
+	if (input[i] && input[i] == '&' && token->type != R_ICL && \
+			token->type != R_OCL && token->type != R_DOC)
 	{
 		token->type = R_CP;
 		redir->copy = 1;
@@ -76,4 +77,21 @@ t_token		*expand(t_token *token)
 	token->data = redir;
 	free(input);
 	return (token);
+}
+
+void	expand_redir(t_list **token_list)
+{
+	t_list		*list;
+	t_token		*token;
+
+	token = NULL;
+	list = *token_list;
+	while (list)
+	{
+		token = list->content;
+		if (token->type / 10 == REDIR)
+			token = expand(token);
+		list->content = token;
+		list = list->next;
+	}
 }

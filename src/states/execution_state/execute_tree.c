@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 21:21:47 by adandres               /    /  /         */
-/*   Updated: 2020/04/21 17:17:55 by adandres                                 */
+/*   Updated: 2020/05/23 19:05:08 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,46 @@ t_return	*init_ret(void)
 	return (ret);
 }
 
+void	history(char ***p_history, char *cmd)
+{
+	char	**hist;
+	char	*tmp;
+	char	*prev;
+	int	i;
+
+	i = 0;
+	prev = NULL;
+	hist = *p_history;
+	if (hist[i] != NULL)
+		prev = hist[i];
+	hist[i] = my_strdup(cmd);
+	i++;
+	while (i < 256 && prev != NULL)
+	{
+		if (i == 255 && hist[i])
+			free(hist[i]);
+		tmp = hist[i];
+		hist[i] = prev;
+		prev = tmp;
+		i++;
+	}
+	*p_history = hist;
+}
+
 void    execute_tree(t_state **machine)
 {
 	t_return *ret;
 	if ((*machine)->is_debug)
-		printf("count : %d\n", (*machine)->is_debug);
-	if ((*machine)->is_debug)
 		printf("\n--------    Start_execution    --------\n\n\n");
 	ret = init_ret();
 	exec_loop((*machine)->tree, machine, &ret, SEMI);
-	//if ((*machine)->count >= 136)
-	//	while (1);
 	if ((*machine)->is_debug)
-		printf("after_loop\n");
 	(*machine)->status = ret->status;
+	history(&(*machine)->history, (*machine)->cmd);
 	free(ret);
 	reset(*machine);
-	(*machine)->state = READ;
+	if ((*machine)->state != END)
+		(*machine)->state = READ;
 	if ((*machine)->status && (*machine)->is_debug)
 		printf("\n--------    FAILURE    --------\n");
 	else if ((*machine)->is_debug)

@@ -1,12 +1,26 @@
-ls | cat -e
-ls > truc && cat truc ; rm truc
-echo 'caca$prout'
+echo 'toto$tata'
 #salut
 env echo bla | cat -e
 export toto="ls -lt" ; $toto ; unset toto ; echo $toto
 echo toto="ls -la" $toto
+export PHOME=$HOME; export HOME='$toto$tata$PATH' ; echo $HOME ; $HOME ; export HOME=$PHOME
 .
+tt$toto
+l$supergrosenvname
+echo ~~~/~~~/
 . toto
 toto ; . | toto
 / prout
 /
+cat < toto
+'lalal
+
+
+
+
+"lolo"
+
+
+toto
+
+'

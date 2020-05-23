@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/19 13:26:48 by adandres               /    /  /         */
-/*   Updated: 2020/04/21 17:48:57 by adandres                                 */
+/*   Updated: 2020/04/22 00:04:49 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		exec_builtin(t_state **machine, t_cmd *cmd)
 	{&exit_prog, &ft_echo, &change_directory, \
 		&my_env, &my_unsetenv, &my_set, &my_export};
 
-
+	
 	(*machine)->status = (builtin_func[cmd->builtin])(cmd->argv, machine);
 	return (0);
 }

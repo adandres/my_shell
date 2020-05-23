@@ -1,3 +1,4 @@
+ls > .tmp1 ; cat < .tmp1 | cat -e | cat -e > .tmp2; cat .tmp2; rm .tmp1 .tmp2
 echo test1
 ls > .tmp1 ; < .tmp1 > .tmp1 ls -l > .tmp2 ; cat -e .tmp2 ; rm .tmp1 .tmp2
 echo test2

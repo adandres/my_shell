@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 21:35:55 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 21:42:25 by adandres                                 */
+/*   Updated: 2020/05/18 18:22:34 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static int	check_copy(int copy, int r_fd, t_return **ret)
 	return (0);
 }
 
-
 static int	open_file(char *path, int type)
 {
 	int file_fd;
@@ -72,6 +71,10 @@ static int	open_file(char *path, int type)
 		file_fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == R_IN)
 		file_fd = open(path, O_RDONLY);
+	else if (type == R_DOC)
+		file_fd = open("tmp", O_RDONLY);
+	if (file_fd == -1)
+		fprintf(stderr, "shell: %s: No such file or directory\n", path);
 	return (file_fd);
 }
 
@@ -95,21 +98,30 @@ static int	check_r_file(char *r_file, int r_fd, int r_type, t_return **ret)
 	return (-1);
 }
 
-void		exec_redir(t_ast *root, t_ast *r_file, t_return **ret, int type)
+int	exec_redir(t_ast *root, t_state *machine, t_return **ret, int type)
 {
-	int         file_fd;
-	t_redir     *redir;
+	int		file_fd;
+	t_redir		*redir;
+	char		*filename;
+	t_ast *r_file;
 
+	r_file = root->right;
 	redir = root->data;
 	if (type == R_CP)
 	{
 		if ((file_fd = check_r_file(r_file->data, redir->fd, type, ret)) == -2)
-			return;
+			return (0);
 	}
-	if (type != R_CP || (file_fd == -1 && redir->fd == 1 && type == R_OUT))
+	if ((type != R_DOC && type != R_CP) || \
+			(file_fd == -1 && redir->fd == 1 && type == R_OUT))
 		file_fd = open_file(r_file->data, root->type);
+	if (file_fd == -1)
+		return (0);
 	(*ret)->fd[(*ret)->n_file] = redir->fd;
 	(*ret)->file[(*ret)->n_file] = file_fd;
 	(*ret)->type[(*ret)->n_file] = type;
+	if (type == R_DOC)
+		(*ret)->file[(*ret)->n_file] = redir->hdoc;	
 	(*ret)->n_file++;
+	return (1);
 }

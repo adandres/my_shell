@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:16:43 by adandres               /    /  /         */
-/*   Updated: 2020/04/21 18:57:20 by adandres                                 */
+/*   Updated: 2020/04/22 00:38:04 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,30 +61,48 @@ void	get_cmd_data(t_ast **root, char **env)
 	t_cmd	*cmd;
 	char	**argv;
 	char	**more_argv;
+	char	*extended;
+	char	*command;
 	int	quoted;
 	int	i;
 
 	i = 0;
 	cmd = (*root)->data;
 	argv = my_tabdup(cmd->argv);
+	command = extand(argv[0], env);
 	while (argv[i] != NULL)
 	{
 		quoted = is_quoted(argv[i]);
-		argv[i] = extand(argv[i], env);
-		if (argv[i] && my_strichr(argv[i], ' ') >= 0 && quoted == 0)
+		extended = extand(argv[i], env);
+		if (extended && my_strichr(extended, ' ') >= 0 && quoted == 0)
 		{
-			more_argv = my_strsplit(argv[i], ' ');
+			more_argv = my_strsplit(extended, ' ');
 			argv = merge_tabs(argv, i, more_argv);
+			if (i == 0)
+			{
+				free(command);
+				command = my_strdup(more_argv[0]);
+			}
 			free_tab(more_argv);
+			free(extended);
 		}
+		else if (extended)
+		{
+			free(argv[i]);
+			argv[i] = extended;
+		}
+		else
+			argv[i][0] = '\0';
 		i++;
 	}
 	free_tab(cmd->argv);
-	if ((*root)->type == CMD && argv[0])
+	if ((*root)->type == CMD && command)
 	{
-		if (!(cmd->path = get_cmd_path(argv[0], env)))
+		if (!(cmd->path = get_cmd_path(command, env)))
 			(*root)->type = NUL;
 	}
+	if (command)
+		free(command);
 	cmd->argv = argv;
 	(*root)->data = cmd;
 }

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 19:57:42 by adandres               /    /  /         */
-/*   Updated: 2020/04/20 22:10:20 by adandres                                 */
+/*   Updated: 2020/04/26 15:06:26 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	my_spe_lst_len(t_list *list)
 
 static int check(t_token *token, t_token *n_token)
 {
-	if ((token->type / 10 == REDIR) && (n_token->type / 10 == REDIR))
+	if ((token->type / 10 == REDIR) && (n_token->type / 10 == REDIR) && token->type)
 		return (1);
 	return (0);
 }

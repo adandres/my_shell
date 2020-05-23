@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:25:54 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 19:33:07 by adandres                                 */
+/*   Updated: 2020/04/22 17:59:51 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static int			no_read_shell(char **argv, char **cpy)
 		return (1);
 	machine->cmd = my_strjoin_tab(argv, " ");
 	parse_input(&machine);
-	expand_input(&machine);
 	build_state(&machine);
 	execute_tree(&machine);
 	if (machine->my_env)
