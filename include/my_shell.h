@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:43 by adandres               /    /  /         */
-/*   Updated: 2020/05/23 19:36:37 by adandres                                 */
+/*   Updated: 2020/05/30 16:32:43 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@
 # include <termios.h>
 # include <fcntl.h>
 # include <limits.h>
-
+# include <sys/types.h>
+# include <pwd.h>
+# include <uuid/uuid.h>
 int		g_signal;
 
 typedef enum	e_states
@@ -94,11 +96,16 @@ typedef struct	s_hterm
 	int	hist;
 	int	restart;
 	int	nrl;
+	int	row;
+	int	col;
 }		t_hterm;
 
 typedef struct		s_state
 {
 	char		*cmd;
+	char		**cmd_tab;
+	int		cmd_tab_len;
+	int		cmd_tab_i;
 	char		**my_env;
 	char		**history;
 	t_list		*token_list;
@@ -176,4 +183,19 @@ int		check_broke_char(char c);
 
 void		write_hdoc(t_state **machine);
 char		**my_tab_reverse(char **tab);
+
+void		handle_multiple_command(t_state **machine);
+void		print_cmd(t_hterm *hterm, int a);
+void		handle_arrows(t_hterm **p_hterm);
+int		my_strinchr(char *str, int n);
+void		get_cursor_position(t_hterm **p_hterm);
+void		apply_term(char *op);
+void		print_cursor_up(int n);
+void		print_cursor_down(int n);
+void		print_cursor_left(int n);
+void		print_cursor_right(int n);
+void		get_cmd(t_hterm **p_hterm);
+int		handle_user_input(t_hterm **p_hterm, char c);
+void		print_tab_fd(char **tab, int fd);
+int		check_quotes(char input, int quoted);
 #endif

@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   my_set.c                                        /       \.'`  `',.--//   */
+/*   my_strinchr.c                                   /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/04/16 16:45:34 by adandres               /    /  /         */
-/*   Updated: 2020/05/27 15:01:35 by adandres                                 */
+/*   Created: 2020/05/26 23:26:29 by adandres               /    /  /         */
+/*   Updated: 2020/05/26 23:26:49 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-int relaunch(char **argv, char **cpy);
-
-int				my_set(char **argv, t_state **machine)
+int	my_strinchr(char *str, int n)
 {
-	char	**env;
+	int	nb;
+	int	re;
 	int	i;
 
-	env = NULL;
-	i = 1;
-	if ((*machine)->my_env)
-		env = my_tabdup((*machine)->my_env);
-	while (argv[i])
+	nb = 0;
+	i = 0;
+	re = 0;
+	while (str[i] && i < n - 1)
 	{
-		if (my_strichr(argv[i], '=') >= 0)
-			env = add_new_env(argv[i], env);
+		nb++;
+		if (str[i] == '\n')
+		{
+			nb = 0;
+			re++;
+		}
 		i++;
 	}
-	if (i == 0 && env)
-		print_tab(env);
-	if ((*machine)->my_env != NULL)
-		free_tab((*machine)->my_env);
-	if (env)
-		(*machine)->my_env = env;
-	return (0);
+	if (re == 0)
+		nb += 3;
+	return (nb);
 }

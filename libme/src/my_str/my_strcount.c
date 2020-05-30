@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   env_index.c                                     /       \.'`  `',.--//   */
+/*   my_strcount.c                                   /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/04/08 17:15:54 by adandres               /    /  /         */
-/*   Updated: 2020/04/15 15:28:09 by adandres                                 */
+/*   Created: 2020/05/26 22:40:27 by adandres               /    /  /         */
+/*   Updated: 2020/05/26 22:40:52 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "my_shell.h"
-
-int	env_index(char **env, char *to_find)
+int	my_strcount(char *str, char c)
 {
 	int	i;
-	int	len;
+	int	nb;
 
 	i = 0;
-	if (env == NULL)
-		return (-1);
-	len = my_strlen(to_find);
-	while (env[i])
+	nb = 0;
+	while (str[i])
 	{
-		if (my_strncmp(env[i], to_find, len) == 0)
-			return (i); 
+		if (str[i] == c)
+			nb++;
 		i++;
 	}
-	return (-1);
+	return (nb);
 }

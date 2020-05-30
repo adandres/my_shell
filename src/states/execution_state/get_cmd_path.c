@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:29:16 by adandres               /    /  /         */
-/*   Updated: 2020/04/21 14:34:34 by adandres                                 */
+/*   Updated: 2020/05/29 17:17:17 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static char	*get_path(char *input, char **env)
 	if (path_list)
 		path = path_search(path_list, input);
 	else
-		printf("error: No PATH set\n");
+		my_printf("error: No PATH set\n");
 	if (path_list)
 		free(path_list);
 	else

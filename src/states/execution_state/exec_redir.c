@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 21:35:55 by adandres               /    /  /         */
-/*   Updated: 2020/05/18 18:22:34 by adandres                                 */
+/*   Updated: 2020/05/27 00:02:38 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ int	exec_redir(t_ast *root, t_state *machine, t_return **ret, int type)
 {
 	int		file_fd;
 	t_redir		*redir;
-	char		*filename;
 	t_ast *r_file;
 
+	machine = NULL;
 	r_file = root->right;
 	redir = root->data;
 	if (type == R_CP)

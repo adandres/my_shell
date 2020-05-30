@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:13:38 by adandres               /    /  /         */
-/*   Updated: 2020/05/23 18:53:55 by adandres                                 */
+/*   Updated: 2020/05/30 14:59:34 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	**read_history(char *filename)
 	fd = open(filename, O_RDONLY | O_CREAT, 0644);
 	if (fd < 0)
 		printf("shit\n");
-	while (get_next_line(fd, &str) > 0)
+	while (get_next_line(fd, &str) > 0 && i < 255)
 	{
 		if (my_strlen(str) > 0)
 		{
@@ -89,6 +89,77 @@ char	**read_history(char *filename)
 	return (history);
 }
 
+char			**fill_empty_env(char *name)
+{
+	char			**env;
+	char			*tmp;
+	char			dir[1024];
+	uid_t			uid;
+	struct passwd		*pwd;
+
+	env = NULL;
+	getcwd(dir, 1024);
+	uid = geteuid();
+	pwd = getpwuid(uid);
+	tmp = my_strjoin("HOME=/Users/", pwd->pw_name);
+	env = add_new_env(tmp, env);
+	free(tmp);
+	tmp = my_strjoin("LOGNAME=", pwd->pw_name);
+	env = add_new_env(tmp, env);
+	free(tmp); 
+	env = add_new_env("SHLVL=1", env);
+	tmp = my_strjoin("PWD=", dir);
+	env = add_new_env(tmp , env);
+	free(tmp);
+	//env = my_setenv("OLDPWD", dir, env);
+	tmp = my_strjoin("_=", name);
+	env = add_new_env(tmp , env);
+	free(tmp);
+	return (env);
+}
+
+char			**add_shlvl(char **env)
+{
+	int			i;
+	int			nb;
+	char		*var;
+
+	if (!env)
+		return (NULL);
+	i = env_index(env, "SHLVL");
+	if (i < 0)
+		return (NULL);
+	else
+	{
+		var = get_var(env[i]);
+		nb = my_atoi(var);
+		nb++;
+		free(env[i]);
+		free(var);
+		var = my_itoa(nb);
+		env[i] = my_strjoin("SHLVL=", var);
+		free(var);
+	}
+	return (env);
+}
+
+char			**copy_check_env(char *name, char **env, int a)
+{
+	char		**new_env;
+	char		*tmp;
+
+	new_env = NULL;
+	if (env && env[0])
+		new_env = my_tabdup(env);
+	else
+		new_env = fill_empty_env(name);
+	new_env = add_shlvl(new_env);
+	tmp = my_strjoin("_=", name);
+	new_env = add_new_env(tmp, new_env);
+	free(tmp);
+	return (new_env);
+}
+
 t_state	*start_machine(int argc, char **argv, char **env)
 {
 	t_state		*machine;
@@ -98,18 +169,24 @@ t_state	*start_machine(int argc, char **argv, char **env)
 	machine->file_fd = -1;
 	machine->status = 0;
 	machine->is_debug = 0;
+	machine->cmd_tab = NULL;
+	machine->cmd_tab_len = 0;
+	machine->cmd_tab_i = 0;
 	machine->tree = NULL;
 	machine->cmd = NULL;
+	machine->history = NULL;
 	machine->my_env = NULL;
 	machine->token_list = NULL;
-	if (env && env[0])
-		machine->my_env = my_tabdup(env);
-	machine->history = read_history(".my_shell_history");
+	if (argc != 0)
+	machine->my_env = copy_check_env(argv[0], env, argc);
+	if (argc != 0)
+		machine->history = read_history(".my_shell_history");
 	if (argc > 1)
 		check_if_file(&machine, argc, argv);
-	if (isatty(1))
+	if (isatty(1) && argc != 0)
 		apply_term("INIT");
-	start_signal();
+	if (argc != 0)
+		start_signal();
 	machine->state = READ;
 	return (machine);
 }

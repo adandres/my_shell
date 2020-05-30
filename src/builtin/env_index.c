@@ -1,39 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   my_set.c                                        /       \.'`  `',.--//   */
+/*   env_index.c                                     /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/04/16 16:45:34 by adandres               /    /  /         */
-/*   Updated: 2020/05/27 15:01:35 by adandres                                 */
+/*   Created: 2020/04/08 17:15:54 by adandres               /    /  /         */
+/*   Updated: 2020/05/26 22:53:02 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-int relaunch(char **argv, char **cpy);
-
-int				my_set(char **argv, t_state **machine)
+int	env_index(char **env, char *to_find)
 {
-	char	**env;
 	int	i;
+	int	len;
 
-	env = NULL;
-	i = 1;
-	if ((*machine)->my_env)
-		env = my_tabdup((*machine)->my_env);
-	while (argv[i])
+	i = 0;
+	if (env == NULL)
+		return (-1);
+	len = my_strlen(to_find);
+	while (env[i])
 	{
-		if (my_strichr(argv[i], '=') >= 0)
-			env = add_new_env(argv[i], env);
+		if (my_strncmp(env[i], to_find, len) == 0)
+			return (i); 
 		i++;
 	}
-	if (i == 0 && env)
-		print_tab(env);
-	if ((*machine)->my_env != NULL)
-		free_tab((*machine)->my_env);
-	if (env)
-		(*machine)->my_env = env;
-	return (0);
+	return (-1);
 }

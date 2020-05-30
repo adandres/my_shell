@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:25:54 by adandres               /    /  /         */
-/*   Updated: 2020/04/22 17:59:51 by adandres                                 */
+/*   Updated: 2020/05/30 15:00:09 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ static int			no_read_shell(char **argv, char **cpy)
 {
 	t_state		*machine;
 
-	if (!(machine = start_machine(0, NULL, cpy)))
-		return (1);
+	if (!(machine = start_machine(0, argv, cpy)))
+		printf("error\n");
+	machine->my_env = my_tabdup(cpy);
 	machine->cmd = my_strjoin_tab(argv, " ");
 	parse_input(&machine);
 	build_state(&machine);

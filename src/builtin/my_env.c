@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 01:32:33 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 19:33:00 by adandres                                 */
+/*   Updated: 2020/05/27 15:28:44 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int		check_unset(char **argv, int j, char ***pcpy)
 	cpy = *pcpy;
 	if (argv[i][j] == 'u')
 	{
-		if (argv[i][j] == 'u')
+		if (argv[i][j + 1] != '\0')
 			cpy = my_unset(argv[i] + j + 1, cpy);
 		else
 			cpy = my_unset(argv[++i], cpy);

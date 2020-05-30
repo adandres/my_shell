@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:02 by adandres               /    /  /         */
-/*   Updated: 2020/05/23 19:10:55 by adandres                                 */
+/*   Updated: 2020/05/24 19:59:48 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av, char **env)
 	{
 		(state_func[machine->state])(&machine);
 	}	
-	fd = open(".my_shell_history", O_WRONLY, O_APPEND);
+	fd = open(".my_shell_history", O_WRONLY | O_TRUNC);
 	machine->history = my_tab_reverse(machine->history);
 	print_tab_fd(machine->history, fd);
 	close(fd);
