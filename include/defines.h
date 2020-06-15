@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:23:42 by adandres               /    /  /         */
-/*   Updated: 2020/05/19 20:23:16 by adandres                                 */
+/*   Updated: 2020/06/03 16:08:37 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,11 @@
  */
 # define SEMI		0
 # define LOGIC		1
-//# define PI		2
-# define PIPE		20
 # define REDIR		3
 # define COMMAND	4
 # define L_AND		10
 # define L_OR		11
+# define PIPE		20
 # define R_OUT		31
 # define RA_OUT		32
 # define R_IN		33
@@ -73,7 +72,8 @@
 # define ARG		43
 # define FILENAME	44
 # define VAR		45
-//# define PIPE		40
+# define SENV		46
+# define RENV		47
 # define NUL		9
 
 /*

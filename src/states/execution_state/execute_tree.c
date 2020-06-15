@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 21:21:47 by adandres               /    /  /         */
-/*   Updated: 2020/05/26 19:53:10 by adandres                                 */
+/*   Updated: 2020/06/04 17:05:58 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ void    execute_tree(t_state **machine)
 		printf("\n--------    Start_execution    --------\n\n\n");
 	ret = init_ret();
 	exec_loop((*machine)->tree, machine, &ret, SEMI);
-	if ((*machine)->is_debug)
-	(*machine)->status = ret->status;
+	(*machine)->status = (ret->status == 0) ? 0 : 1;
 	history(&(*machine)->history, (*machine)->cmd);
 	free(ret);
 	reset(*machine);

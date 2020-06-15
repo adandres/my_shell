@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 01:18:49 by adandres               /    /  /         */
-/*   Updated: 2020/04/19 13:08:11 by adandres                                 */
+/*   Updated: 2020/05/31 15:20:51 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,6 @@ static char		*new_directory(char *filename, char **env)
 	return (str);
 }
 
-char		**my_resetenv(char *name, char *var, char **env)
-{
-	int		i;
-	char		*new_env;
-
-	i = env_index(env, name);
-	if (i == -1)
-		i = my_tablen(env);
-	free(env[i]);
-	new_env = my_strjoin(name, "=");
-	new_env = my_strjoin_free(new_env, var);
-	env[i] = new_env;
-	return (env);
-}
-
 int		change_directory(char **argv, t_state **machine)
 {
 	char		*path;
@@ -85,7 +70,7 @@ int		change_directory(char **argv, t_state **machine)
 		printf("Ah!\n");;
 	path = my_strnew(PATH_MAX);
 	path = getcwd(path, PATH_MAX);
-	env = my_resetenv("OLDPWD", path, env);
+	env = add_or_update_env("OLDPWD", path, env);
 	if (chdir(str) < 0)
 	{
 		printf("zut_e\n");
@@ -94,7 +79,7 @@ int		change_directory(char **argv, t_state **machine)
 	free(path);
 	path = my_strnew(PATH_MAX);
 	path = getcwd(path, PATH_MAX);
-	env = my_resetenv("PWD", path, env);
+	env = add_or_update_env("PWD", path, env);
 	(*machine)->my_env = env;
 	free(str);
 	free(path);

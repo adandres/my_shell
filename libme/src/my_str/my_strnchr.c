@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   check_quotes.c                                  /       \.'`  `',.--//   */
+/*   my_strnchr.c                                    /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/05/30 16:29:32 by adandres               /    /  /         */
-/*   Updated: 2020/06/02 17:41:44 by adandres                                 */
+/*   Created: 2020/05/31 15:42:00 by adandres               /    /  /         */
+/*   Updated: 2020/05/31 15:46:10 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "my_shell.h"
+#include "libme.h"
 
-int	check_quotes(char input, int quoted)
+int	my_strnchr(char *str, int n, char c)
 {
-	if ((input == '\'' || input == '\"') && (quoted == 0 || quoted == input))
-			return ((quoted == 0) ? input : 0);
-	return (quoted);
-}
+	int	i;
+	int	count;
 
-int	not_a_del(char c)
-{
-	if (c != ' ' && c != '\n' && c != '\v' && c != 0)
-		return (1);
-	return (0);
+	i = 0;
+	count = 0;
+	while (str[i] && i < n)
+	{
+		if (str[i] == c)
+			count++;
+		i++;
+	}
+	return (count);
 }

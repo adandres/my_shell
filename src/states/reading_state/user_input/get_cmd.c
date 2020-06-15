@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:58:27 by adandres               /    /  /         */
-/*   Updated: 2020/05/30 18:55:36 by adandres                                 */
+/*   Updated: 2020/06/15 14:53:39 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int		resize(char **str, int n)
 	new = (char*)malloc(sizeof(char) * n);
 	my_bzero(new, n);
 	new = my_strcpy(new, *str);
-	//free(*str);
+	free(*str);
 	*str = new;
 	return (n);
 }
@@ -39,10 +39,12 @@ static void	add_char_at_curs(t_hterm **p_hterm, char input)
 	char	tmp;
 
 	i = 1;
+	get_cursor_position(p_hterm);
+	get_terminal_size(p_hterm);
 	hterm = *p_hterm;
 	tmp = hterm->cmd[hterm->pos - hterm->curs];
 	hterm->cmd[hterm->pos - hterm->curs] = input;
-	while (hterm->pos - hterm->curs + i <= hterm->pos + 1)
+	while (hterm->pos - hterm->curs + i <= hterm->pos)
 	{
 		input = hterm->cmd[hterm->pos - hterm->curs + i];
 		hterm->cmd[hterm->pos - hterm->curs + i] = tmp;
@@ -67,26 +69,24 @@ void	get_cmd(t_hterm **p_hterm)
 	int		size;
 	char		input;
 
+	my_printf("\x1b[7h");
 	hterm = *p_hterm;
 	input = 0;
 	size = resize(&hterm->cmd, 0);
 	apply_term("ROW");
+	get_info(&hterm);
 	while (input != '\n' && (isatty(0) || input) && !hterm->restart)
 	{
-		if (my_isprint(input))
-			print_cmd(hterm, 1);
 		if (read(STDIN_FILENO, &input, 1) < 0)
 			printf("error\n");
 		else
 		{
 			if (!handle_user_input(&hterm, input))
 			{
-				if (hterm->pos == size - 2)
+				if (hterm->pos >= size - 2)
 					size = resize(&hterm->cmd, size);
-				if (hterm->curs == 0)
-					hterm->cmd[hterm->pos] = input;
-				else
-					add_char_at_curs(&hterm, input);
+				add_char_at_curs(&hterm, input);
+				print_cmd(hterm, 1);
 				hterm->pos += 1;
 			}
 			else if ((int)my_strlen(hterm->cmd) >= size)
@@ -95,6 +95,7 @@ void	get_cmd(t_hterm **p_hterm)
 					size *= 2;
 				size = resize(&hterm->cmd, size);
 			}
+			get_info(&hterm);
 		}
 	}
 	apply_term("RESET");

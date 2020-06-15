@@ -6,7 +6,7 @@
 #    By: adandres                                    \       /'.____.'\___|    #
 #                                                     '-...-' __/ | \   (`)    #
 #    Created: 2020/03/16 11:52:14 by adandres               /    /  /          #
-#    Updated: 2020/05/26 22:41:03 by adandres                                  #
+#    Updated: 2020/05/31 15:44:32 by adandres                                  #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRC = my_putchar.c my_putendl.c my_putnbr.c my_putstr.c my_putchar_fd.c \
 	get_dec.c get_specifier.c get_udec.c utils.c parse_lenght.c get_addr.c \
 	get_next_line.c my_strndup.c my_strjoin_free.c my_realloc.c \
 	my_strjoin_tab.c my_strichr.c my_memswap.c my_lst_len.c my_lst_pass.c \
-	my_lst_free.c my_strcount.c
+	my_lst_free.c my_strcount.c my_strnchr.c
 
 H_PATH = include
 O_PATH = obj

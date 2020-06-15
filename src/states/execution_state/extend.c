@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:13:50 by adandres               /    /  /         */
-/*   Updated: 2020/04/22 17:31:06 by adandres                                 */
+/*   Updated: 2020/06/04 16:58:37 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,20 @@ int	get_param(char *input, char **extended, char **env)
 	return (len);
 }
 
-static int	extent(char **input, int i, char **env)
+static	int	check_special_env(char *input, char **dest, t_state *machine)
+{
+	if (my_strcmp("$$", input) == 0)
+		*dest = my_itoa(machine->pid);
+	else if (my_strcmp("$?", input) == 0)
+		*dest = my_itoa(machine->status);
+	else if (my_strcmp("$!", input) == 0)
+		printf("3\n");
+	else
+		return (0);
+	return (1);
+}
+
+static int	extent(char **input, int i, t_state *machine)
 {
 	char	*extended;
 	char	*head;
@@ -122,7 +135,8 @@ static int	extent(char **input, int i, char **env)
 	head = NULL;
 	if (i != 0)
 		head = my_strndup(*input, i);
-	len = get_param(*input + i, &extended, env);
+	if (check_special_env(*input + i, &extended, machine) == 0)
+		len = get_param(*input + i, &extended, machine->my_env);
 	free(*input);
 	*input = head;
 	if (head && extended)
@@ -136,7 +150,7 @@ static int	extent(char **input, int i, char **env)
 	return (len);
 }
 
-char		*extand(char *to_ext, char **env)
+char		*extand(char *to_ext, t_state *machine)
 {
 	int	i;
 	int	quotes;
@@ -146,20 +160,14 @@ char		*extand(char *to_ext, char **env)
 	quotes = 0;
 	input = my_strdup(to_ext);
 	if (input[0] == '~')
-		i = replace_by_home(&input, env);
+		i = replace_by_home(&input, machine->my_env);
 	while (input && input[i])
 	{
-		if ((input[i] == '\'' || input[i] == '\"') && \
-				(quotes == 0 || quotes == input[i]))
-		{
-			quotes = ((quotes == 0) ? input[i] : 0);
-			input = my_strcdel(input, i);
-			i--;
-		}
+		quotes = check_quotes(input[i], quotes);
 		if (input[i] == '$' && input[i + 1] && quotes != '\'')
 		{
-			if ((i += extent(&input, i, env)) == -1)
-				return (NULL);
+			if ((i += extent(&input, i, machine)) == -1)
+				return (input);
 		}
 		else
 			i++;

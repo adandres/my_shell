@@ -6,11 +6,13 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:23:38 by adandres               /    /  /         */
-/*   Updated: 2020/05/26 23:57:30 by adandres                                 */
+/*   Updated: 2020/06/15 14:35:19 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
+
+
 
 static void		delete_last_command(t_hterm **p_hterm)
 {
@@ -37,7 +39,8 @@ static void		get_prev_command(t_hterm **p_hterm)
 	(*p_hterm)->hist -= 1;
 	if ((*p_hterm)->hist == -1)
 	{
-		(*p_hterm)->cmd = my_strcpy((*p_hterm)->cmd, (*p_hterm)->save);
+		free((*p_hterm)->cmd);
+		(*p_hterm)->cmd = my_strdup((*p_hterm)->save);
 		free((*p_hterm)->save);
 		(*p_hterm)->save = NULL;
 	}
@@ -60,18 +63,20 @@ static void		get_next_command(t_hterm **p_hterm)
 
 void		handle_arrows(t_hterm **p_hterm)
 {
-	char c;
-	int a;
+	char	c;
+	int	a;
 
 	read(0, &c, 1);
 	read(0, &c, 1);
 	if (c == 'C' && (*p_hterm)->curs > 0)
 	{
 		get_cursor_position(p_hterm);
-		if ((*p_hterm)->cmd[(*p_hterm)->pos - (*p_hterm)->curs] == '\n')
+		get_terminal_size(p_hterm);
+		if ((*p_hterm)->cmd[(*p_hterm)->pos - (*p_hterm)->curs] == '\n' || \
+			(*p_hterm)->curs_pos.x == (*p_hterm)->win_lim.x)
 		{
+			print_cursor_left((*p_hterm)->win_lim.x);
 			my_printf(ARROW_DOWN);
-			print_cursor_left((*p_hterm)->col);
 		}
 		else
 			my_printf(ARROW_RIGHT);
@@ -80,9 +85,10 @@ void		handle_arrows(t_hterm **p_hterm)
 	if (c == 'D' && (*p_hterm)->curs < (*p_hterm)->pos)
 	{
 		get_cursor_position(p_hterm);
-		if ((*p_hterm)->col == 1)
+		get_terminal_size(p_hterm);
+		if ((*p_hterm)->curs_pos.x == 1)
 		{
-		a =  my_strinchr((*p_hterm)->cmd, (*p_hterm)->pos - (*p_hterm)->curs);
+	a = my_strinchr((*p_hterm)->cmd, (*p_hterm)->pos - (*p_hterm)->curs, (*p_hterm)->win_lim.x - 1);
 			my_printf(ARROW_UP);
 			if (a > 0)
 				print_cursor_right(a);

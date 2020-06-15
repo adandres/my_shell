@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/19 00:31:31 by adandres               /    /  /         */
-/*   Updated: 2020/04/22 21:16:24 by adandres                                 */
+/*   Updated: 2020/06/03 16:21:43 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,12 @@ int     check_word(t_token **token, char *input)
 			quotes = ((quotes == 0) ? input[i] : 0);
 		i++;
 	}
-	if (i > 0)
+	if (i > 0 && my_strncmp("env", input, i) == 0)
+		*token = create_token(my_strndup(input, i), RENV);
+	else if (i > 0 && my_strnchr(input, i, '=') == 0)
 		*token = create_token(my_strndup(input, i), WORD);
+	else if (i > 0)
+		*token = create_token(my_strndup(input, i), SENV);
 	if (i == 0)
 		return (-1);
 	return (i);

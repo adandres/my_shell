@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 18:22:49 by adandres               /    /  /         */
-/*   Updated: 2020/05/27 12:42:42 by adandres                                 */
+/*   Updated: 2020/06/15 14:31:31 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@ t_hterm		*init_term_handling_struct(t_state *machine)
 	if (!(hterm = (t_hterm*)malloc(sizeof(t_hterm))))
 		return (NULL);
 	hterm->history = machine->history;
+	hterm->h_len = my_tablen(hterm->history);
 	hterm->pos = 0;
 	hterm->save = NULL;
 	hterm->curs = 0;
 	hterm->hist = -1;
-	hterm->h_len = my_tablen(hterm->history);
 	hterm->restart = 0;
-	hterm->nrl = 0;
 	return (hterm);
 }
 
@@ -55,18 +54,18 @@ void		re_read_input(t_state **machine)
 	get_cmd(&hterm);
 	(*machine)->history = hterm->history;
 	if (hterm->pos == 0)
-	{
-		(*machine)->cmd = input;
-		return;
-	}
-	if (input)
+		;
+	else if (input)
 		input = my_strjoin_free(input, hterm->cmd);
 	else
 		input = my_strdup(hterm->cmd);
+	if (hterm->save)
+		free(hterm->save);
 	free(hterm->cmd);
 	free(hterm);
 	(*machine)->cmd = input;
-	handle_multiple_command(machine);
+	if (hterm->pos != 0)
+		handle_multiple_command(machine);
 }
 
 void		reset_line(void)

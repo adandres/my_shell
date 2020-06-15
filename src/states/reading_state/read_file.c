@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 19:11:41 by adandres               /    /  /         */
-/*   Updated: 2020/05/14 13:15:51 by adandres                                 */
+/*   Updated: 2020/06/03 18:48:31 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void    read_file(t_state **machine)
 		if (ret > 0)
 			free(str);
 		if (ret == 0)
-			/*while(1);*/exit(EXIT_SUCCESS);
+			exit(EXIT_SUCCESS);
 	}
 	else
 		exit(EXIT_FAILURE);
@@ -40,10 +40,7 @@ void	re_read_file(t_state **machine)
 
 	command = NULL;
 	if ((*machine)->cmd)
-	{
-		command = my_strdup((*machine)->cmd);
-		free((*machine)->cmd);
-	}
+		command = my_strjoin_free((*machine)->cmd, "\n");
 	read_file(machine);
 	if (command && (*machine)->cmd)
 	{

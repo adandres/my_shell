@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:43 by adandres               /    /  /         */
-/*   Updated: 2020/05/30 16:32:43 by adandres                                 */
+/*   Updated: 2020/06/15 17:54:16 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,6 @@
 # include <pwd.h>
 # include <uuid/uuid.h>
 int		g_signal;
-
-typedef enum	e_states
-{
-	ST_READ,
-	ST_PARSE,
-	ST_EXPAND,
-	ST_BUILD,
-	ST_EXEC,
-	ST_END,
-}		t_states;
 
 typedef struct	s_token
 {
@@ -85,6 +75,12 @@ typedef struct	s_ast
 	struct s_ast	*right;
 }		t_ast;
 
+typedef struct	s_arr
+{
+	int	x;
+	int	y;
+}		t_arr;
+
 typedef struct	s_hterm
 {
 	char	**history;
@@ -95,9 +91,9 @@ typedef struct	s_hterm
 	int	curs;
 	int	hist;
 	int	restart;
-	int	nrl;
-	int	row;
-	int	col;
+	t_arr	win_lim;
+	t_arr	curs_pos;
+	int	n_lines;
 }		t_hterm;
 
 typedef struct		s_state
@@ -113,6 +109,7 @@ typedef struct		s_state
 	int		state;
 	int		file_fd;
 	int		status;
+	int		pid;
 	int		is_debug;
 }			t_state;
 
@@ -166,8 +163,8 @@ void		re_read_input(t_state **machine);
 void		re_read_file(t_state **machine);
 void		reset(t_state *machine);
 
-char		*extand(char *input, char **env);
-void		get_cmd_data(t_ast **root, char **env);
+char		*extand(char *input, t_state *machine);
+void		get_cmd_data(t_ast **root, t_state *machine);
 t_token		*create_token(char *input, int type);
 int		check_special_char(char c);
 
@@ -187,7 +184,7 @@ char		**my_tab_reverse(char **tab);
 void		handle_multiple_command(t_state **machine);
 void		print_cmd(t_hterm *hterm, int a);
 void		handle_arrows(t_hterm **p_hterm);
-int		my_strinchr(char *str, int n);
+int		my_strinchr(char *str, int n, int width);
 void		get_cursor_position(t_hterm **p_hterm);
 void		apply_term(char *op);
 void		print_cursor_up(int n);
@@ -198,4 +195,13 @@ void		get_cmd(t_hterm **p_hterm);
 int		handle_user_input(t_hterm **p_hterm, char c);
 void		print_tab_fd(char **tab, int fd);
 int		check_quotes(char input, int quoted);
+char		**add_or_update_env(char *name, char *var, char **env);
+char		**my_tab_add_str(char *src, char **tab, int i);
+char		**my_tab_add_str_end(char *src, char **tab);
+char		**my_tab_del_str(char **tab, int n);
+int		not_a_del(char c);
+void		get_terminal_size(t_hterm **p_hterm);
+int		count_lines(char *str, int width, int curs, int li);
+void		get_input_info(t_hterm **p_hterm);
+void		get_info(t_hterm **p_hterm);
 #endif

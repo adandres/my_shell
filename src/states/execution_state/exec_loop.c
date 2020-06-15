@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/19 13:17:02 by adandres               /    /  /         */
-/*   Updated: 2020/05/18 18:28:58 by adandres                                 */
+/*   Updated: 2020/06/04 16:10:08 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,9 @@ void	exec_loop(t_ast *root, t_state **machine, t_return **ret, int r_type)
 	if (r_type == L_AND || r_type == L_OR)
 		(*ret)->n_file = 0;
 	if (root->type == BUILT || root->type == CMD)
-		get_cmd_data(&root, (*machine)->my_env);
-	if (root->type == PIPE && root->right->type == CMD)
-		get_cmd_data(&root->right, (*machine)->my_env);
+		get_cmd_data(&root, *machine);
+if (root->type == PIPE && (root->right->type == CMD || root->right->type == BUILT))
+		get_cmd_data(&root->right, *machine);
 	while (index < 5 && status == 0)
 		status = loop[index++](root, machine, ret, r_type);
 }

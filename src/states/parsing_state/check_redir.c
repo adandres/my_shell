@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 19:47:36 by adandres               /    /  /         */
-/*   Updated: 2020/04/23 17:27:05 by adandres                                 */
+/*   Updated: 2020/06/03 16:51:59 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,8 @@ static int	ret_in(t_token **token, char *input)
 		i++;
 	if (input[i] == '>')
 	{
-		//if (check_special_char(input[i + 1]) == 1)
-		//{
-			*token = pet_token(my_strndup(input, i + 1), type);
-			return (i + 1);
-		//}
+		*token = pet_token(my_strndup(input, i + 1), type);
+		return (i + 1);
 	}
 	return (0);
 }
@@ -115,11 +112,11 @@ static int	ret_stoken(t_token **token, char *input)
 {
 	int	i;
 	int	type;
-	
+
 	i = pass_number(input);
 	if (!(type = give_type(input[i])))
 		return (0);
-	*token = create_token(my_strndup(input, i), type);
+	*token = create_token(my_strndup(input, i + 1), type);
 	return (i + 1);
 }
 

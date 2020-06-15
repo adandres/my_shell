@@ -1,1 +1,14 @@
 env -u TOTO ls
+export lala="lala      "
+ls $lala
+export lala='$lala    $lolo'
+echo $lala"tutu toto"
+echo $lala" tutu toto"
+ls $lala" tutu toto"
+ls "tutu toto "$lala
+export lala="    lalala
+lolo    "
+echo $lala"tutu toto"
+echo $lala" tutu toto"
+ls $lala" tutu toto"
+ls "tutu toto "$lala

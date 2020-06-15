@@ -6,103 +6,106 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:16:43 by adandres               /    /  /         */
-/*   Updated: 2020/04/22 00:38:04 by adandres                                 */
+/*   Updated: 2020/06/04 16:17:35 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-char	**merge_tabs(char **tab, int i, char **to_add)
+char	**add_argv(char **argv, char *str, int end, int n)
 {
-	int	tab_len;
-	int	len;
-	char	**added;
-	int	j;
+	int	i;
+	char	*to_add;
+	int	quotes;
 
-	j = 0;
-	tab_len = my_tablen(tab);
-	len = my_tablen(to_add) + tab_len;
-	free(tab[i]);
-	added = (char**)realloc(tab, sizeof(char*) * len);
-	while (to_add[j])
+	quotes = 0;
+	i = end;
+	while (i > 0 && (not_a_del(str[i]) || quotes != 0))
 	{
-		added[i] = my_strdup(to_add[j]);
-		i++;
-		j++;
+		quotes = check_quotes(str[i], quotes);
+		i--;
 	}
-	added[i] = NULL;
-	return (added);
+	if (!not_a_del(str[i]))
+		i++;
+	to_add = my_strndup(str + i, end - i + 1);
+	argv = my_tab_add_str(to_add, argv, n);
+	free(to_add);
+	return (argv);
 }
 
-int	is_quoted(char *str)
+char	**add_extended(char **argv, char *str, int *n)
 {
 	int	i;
 	int	quotes;
-	int	quoted;
 
 	i = 0;
 	quotes = 0;
-	quoted = 0;
 	while (str[i])
 	{
-		if ((str[i] == '\'' || str[i] == '\"') && \
-				(quotes == 0 || quotes == str[i]))
+		quotes = check_quotes(str[i], quotes);	
+		if (quotes == 0 && not_a_del(str[i]) && not_a_del(str[i + 1]) == 0)
+			argv = add_argv(argv, str, i, (*n)++);
+		i++;
+	}
+	return (argv);
+}
+
+char	**remove_quotes(char **argv)
+{
+	int	i;
+	int	j;
+	int	quotes;
+
+	i = 0;
+	quotes = 0;
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i][j])
 		{
-			quotes = ((quotes == 0) ? str[i] : 0);
-			quoted = 1;
+			if ((argv[i][j] == '\'' || argv[i][j] == '\"') && \
+					(quotes == 0 || quotes == argv[i][j]))
+			{
+				quotes = ((quotes == 0) ? argv[i][j] : 0);
+				argv[i] = my_strcdel(argv[i], j);
+				j--;
+			}
+			j++;
 		}
 		i++;
 	}
-	return (quoted);
+	return (argv);
 }
 
-void	get_cmd_data(t_ast **root, char **env)
+void	get_cmd_data(t_ast **root, t_state *machine)
 {
 	t_cmd	*cmd;
 	char	**argv;
-	char	**more_argv;
 	char	*extended;
 	char	*command;
-	int	quoted;
 	int	i;
 
 	i = 0;
 	cmd = (*root)->data;
-	argv = my_tabdup(cmd->argv);
-	command = extand(argv[0], env);
+	argv = cmd->argv;
 	while (argv[i] != NULL)
 	{
-		quoted = is_quoted(argv[i]);
-		extended = extand(argv[i], env);
-		if (extended && my_strichr(extended, ' ') >= 0 && quoted == 0)
+		extended = extand(argv[i], machine);
+		argv = my_tab_del_str(argv, i);
+		if (extended)
 		{
-			more_argv = my_strsplit(extended, ' ');
-			argv = merge_tabs(argv, i, more_argv);
-			if (i == 0)
-			{
-				free(command);
-				command = my_strdup(more_argv[0]);
-			}
-			free_tab(more_argv);
+			argv = add_extended(argv, extended, &i);
 			free(extended);
 		}
-		else if (extended)
-		{
-			free(argv[i]);
-			argv[i] = extended;
-		}
-		else
-			argv[i][0] = '\0';
-		i++;
 	}
-	free_tab(cmd->argv);
+	argv = remove_quotes(argv);
+	command = argv[0];
 	if ((*root)->type == CMD && command)
 	{
-		if (!(cmd->path = get_cmd_path(command, env)))
+		if (!(cmd->path = get_cmd_path(command, machine->my_env)))
 			(*root)->type = NUL;
 	}
-	if (command)
-		free(command);
+	machine->my_env = add_or_update_env("_", argv[i - 1], machine->my_env);
 	cmd->argv = argv;
 	(*root)->data = cmd;
 }

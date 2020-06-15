@@ -6,13 +6,92 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 22:07:02 by adandres               /    /  /         */
-/*   Updated: 2020/05/23 13:29:42 by adandres                                 */
+/*   Updated: 2020/06/04 14:51:33 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
+char	**my_tab_del_str(char **tab, int n)
+{
+	int	i;
+	int	j;
+	char	**new_tab;
 
+	i = 0;
+	j = 0;
+	new_tab = (char **)malloc(sizeof(char*) * my_tablen(tab));
+	while (tab[i])
+	{
+		if (i != n)
+		{
+			new_tab[j] = tab[i];
+			j++;
+		}
+		else
+			free(tab[i]);
+		i++;
+	}
+	new_tab[j] = NULL;
+	free(tab);
+	return (new_tab);
+}
+
+char	**my_tab_add_str(char *src, char **tab, int n)
+{
+	int	i;
+	int	j;
+	char	**new_tab;
+
+	i = 0;
+	j = 0;
+	new_tab = (char **)malloc(sizeof(char*) * (my_tablen(tab) + 2));
+	if (tab[0] == NULL)
+	{
+		new_tab[0] = my_strdup(src);
+		new_tab[1] = NULL;
+		free(tab);
+		return (new_tab);
+	}
+	while (tab[i] && i < n)
+	{
+		new_tab[j] = tab[i];
+		i++;
+		j++;
+	}
+	new_tab[j] = my_strdup(src);
+	j++;
+	while (tab[i])
+	{
+		new_tab[j] = tab[i];
+		i++;
+		j++;
+	}
+	new_tab[j] = NULL;
+	free(tab);
+	return (new_tab);
+}
+
+char	**my_tab_add_str_end(char *src, char **tab)
+{
+	int	i;
+	int	j;
+	char	**new_tab;
+
+	i = 0;
+	j = 0;
+	new_tab = (char **)malloc(sizeof(char*) * (my_tablen(tab) + 2));
+	while (tab && tab[i])
+	{
+		new_tab[j] = tab[i];
+		i++;
+		j++;
+	}
+	new_tab[j] = my_strdup(src);
+	new_tab[j + 1] = NULL;
+	free(tab);
+	return (new_tab);
+}
 
 void		free_tab(char **tab)
 {

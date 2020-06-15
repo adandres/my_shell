@@ -6,30 +6,28 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 18:27:48 by adandres               /    /  /         */
-/*   Updated: 2020/04/22 00:02:02 by adandres                                 */
+/*   Updated: 2020/06/04 14:52:00 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-char	**reeeee(char *src, char **env, int index)
+char	**update_env(char *src, char **env, int index)
 {
 	free(env[index]);
 	env[index] = my_strdup(src);
 	return (env);
 }
 
-char	**my_tab_add_str(char *src, char **tab)
+char		**add_or_update_env(char *name, char *var, char **env)
 {
-	int		len;
-	char		**new_tab;
+	char	*full;
 
-	len = my_tablen(tab);
-	if (!(new_tab = (char**)realloc(tab, sizeof(char*) * (len + 2))))
-		return (NULL);
-	new_tab[len] = my_strdup(src);
-	new_tab[len + 1] = NULL;
-	return (new_tab);
+	full = my_strjoin(name, "=");
+	full = my_strjoin_free(full, var);
+	env = add_new_env(full, env);
+	free(full);
+	return (env);
 }
 
 char		**add_new_env(char *new, char **env)
@@ -41,9 +39,9 @@ char		**add_new_env(char *new, char **env)
 	name = get_name(new);
 	index = env_index(env, name);
 	if (index < 0)
-		new_env = my_tab_add_str(new, env);
+		new_env = my_tab_add_str_end(new, env);
 	else
-		new_env = reeeee(new, env, index);
+		new_env = update_env(new, env, index);
 	free(name);
 	return (new_env);
 }

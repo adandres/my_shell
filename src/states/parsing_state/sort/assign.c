@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/22 16:14:32 by adandres               /    /  /         */
-/*   Updated: 2020/04/22 16:14:55 by adandres                                 */
+/*   Updated: 2020/06/04 14:56:19 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ static int	check_parser(int type, int prev_type, int is_cmd)
 		type = FILENAME;
 	else if (type == WORD && is_cmd == 0)
 		type = CMD;
-	else if (type == WORD || (type == VAR && is_cmd == 1))
+	else if (type == WORD || (type == VAR && is_cmd))
+		type = ARG;
+	else if (type == SENV && is_cmd)
+		type = ARG;
+	if (is_cmd == RENV && type / 10 <= REDIR)
 		type = ARG;
 	return (type);
 }
@@ -36,14 +40,15 @@ void	assign_word(t_list **token_list)
 	while (list)
 	{
 		token = list->content;
-		token->type = check_parser(token->type, prev_type, is_cmd);
 		if (token->type == PIPE || token->type < REDIR * 10)
 			is_cmd = 0;
-		if (token->type == CMD)
-			is_cmd = 1;
+		token->type = check_parser(token->type, prev_type, is_cmd);
+		if (token->type == CMD || token->type == RENV)
+		{
+			is_cmd = token->type;
+			token->type = CMD;
+		}
 		prev_type = token->type;
 		list = list->next;
 	}
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:21:33 by adandres               /    /  /         */
-/*   Updated: 2020/04/21 14:37:44 by adandres                                 */
+/*   Updated: 2020/05/31 16:08:58 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ static char	**grep_argv(t_list *token_list)
 	while (token_list)
 	{
 		token = token_list->content;
-		if (token->type != CMD && token->type != ARG)
+		if (token->type != CMD && token->type != ARG && token->type != SENV)
 			break;
-		argv[i] = my_strdup(token->data);
+		if (token->type != SENV)
+			argv[i++] = my_strdup(token->data);
 		token_list = token_list->next;
-		i++;
 	}
 	argv[i] = NULL;
 	return (argv);
