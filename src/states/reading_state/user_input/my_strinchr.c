@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:26:29 by adandres               /    /  /         */
-/*   Updated: 2020/06/15 18:07:43 by adandres                                 */
+/*   Updated: 2020/06/15 21:08:16 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,12 @@ int	count_lines(char *str, int width, int curs, int n_ligne)
 	int	li;
 
 	i = 0;
-	li = 0;
 	count = 0;
-	if (n_ligne == 0)
-		li = 2;
+	li = 2;
 	while (str[i])
 	{
 		li++;
-		if (str[i] == '\n'/* && (li % (width) != 0 || li == 0)*/)
+		if (str[i] == '\n' && li != 0)
 		{
 			count++;
 			li = 0;
@@ -60,7 +58,7 @@ int	my_strinchr(char *str, int n, int width)
 			nb = 0;
 			re++;
 		}
-		if (nb % (width + 1) == 0 && i != 0 && nb != 0)
+		if (nb % (width) == 0 && i != 0 && nb != 0)
 			nb = 0;
 		i++;
 	}

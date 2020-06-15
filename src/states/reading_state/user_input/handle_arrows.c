@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:23:38 by adandres               /    /  /         */
-/*   Updated: 2020/06/15 14:35:19 by adandres                                 */
+/*   Updated: 2020/06/15 20:44:58 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void		handle_arrows(t_hterm **p_hterm)
 		get_terminal_size(p_hterm);
 		if ((*p_hterm)->curs_pos.x == 1)
 		{
-	a = my_strinchr((*p_hterm)->cmd, (*p_hterm)->pos - (*p_hterm)->curs, (*p_hterm)->win_lim.x - 1);
+a = my_strinchr((*p_hterm)->cmd, (*p_hterm)->pos - (*p_hterm)->curs, (*p_hterm)->win_lim.x);
 			my_printf(ARROW_UP);
 			if (a > 0)
 				print_cursor_right(a);

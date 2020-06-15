@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:02:03 by adandres               /    /  /         */
-/*   Updated: 2020/06/15 15:11:58 by adandres                                 */
+/*   Updated: 2020/06/15 21:10:56 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,22 @@ static void	del_prev_char(t_hterm **p_hterm)
 	a = 0;
 	if ((*p_hterm)->curs == (*p_hterm)->pos)
 		return;
+	get_cursor_position(p_hterm);
 	del = del_inline(p_hterm);
 	if (del == '\n' || (*p_hterm)->curs_pos.x == 1)
 	{
 		my_printf("\x1b[J");
 		my_printf(ARROW_UP);
-		a = my_strinchr((*p_hterm)->cmd, (*p_hterm)->pos - (*p_hterm)->curs, (*p_hterm)->win_lim.x - 1);
+a = my_strinchr((*p_hterm)->cmd, (*p_hterm)->pos - (*p_hterm)->curs, (*p_hterm)->win_lim.x);
 		if (a > 0)
 			print_cursor_right(a);
-		(*p_hterm)->curs_pos.y -= 1;
-		(*p_hterm)->curs_pos.x = (*p_hterm)->win_lim.x + 1;
-		my_printf("\x1b[K");
+		get_cursor_position(p_hterm);
+		if (a > 0)
+			(*p_hterm)->curs_pos.x++;
 	}
 	else
 		my_printf(DEL_PREV_CHAR);
 	(*p_hterm)->pos -= 1;
-	//get_cursor_position(p_hterm);
 	if ((*p_hterm)->curs)
 		print_cmd(*p_hterm, -1);
 }

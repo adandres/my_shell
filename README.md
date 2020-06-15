@@ -4,7 +4,7 @@ bug history
 leaks history
 segfault history
 mettre curseur end cmd after line editing
-
+arrows on big multiligne pas aligner
 --=== ===--
 
 faire fonction getterminfo
