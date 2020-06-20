@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:23:38 by adandres               /    /  /         */
-/*   Updated: 2020/06/20 19:38:34 by adandres                                 */
+/*   Updated: 2020/06/20 19:47:26 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ static void		get_prev_command(t_hterm **p_hterm)
 	free(hterm->history[hterm->hist]);
 	hterm->history[hterm->hist] = my_strdup(hterm->cmd);
 	hterm->hist -= 1;
+	free(hterm->cmd);
 	if (hterm->hist == -1)
 	{
-		free(hterm->cmd);
 		hterm->cmd = my_strdup(hterm->save);
 		free(hterm->save);
 		hterm->save = NULL;
 	}
 	else
-	hterm->cmd = my_strcpy(hterm->cmd, hterm->history[hterm->hist]);
+		hterm->cmd = my_strdup(hterm->history[hterm->hist]);
 	*p_hterm = hterm;
 }
 
@@ -66,7 +66,8 @@ static void		get_next_command(t_hterm **p_hterm)
 		hterm->history[hterm->hist] = my_strdup(hterm->cmd);
 	}
 	hterm->hist += 1;
-	hterm->cmd = my_strcpy(hterm->cmd, hterm->history[hterm->hist]);
+	free(hterm->cmd);
+	hterm->cmd = my_strdup(hterm->history[hterm->hist]);
 	*p_hterm = hterm;
 }
 
