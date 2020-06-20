@@ -4,7 +4,6 @@ bug history
 leaks history
 segfault history
 mettre curseur end cmd after line editing
-arrows on big multiligne pas aligner
 --=== ===--
 
 faire fonction getterminfo
@@ -14,6 +13,7 @@ changer partout x = ' ' en fonction
 
 --=== ===--
 proteger malloc retour et fonction
+test ligne editing
 test leaks
 test export
 test set

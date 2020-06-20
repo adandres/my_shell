@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:43 by adandres               /    /  /         */
-/*   Updated: 2020/06/15 17:54:16 by adandres                                 */
+/*   Updated: 2020/06/20 19:37:58 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct	s_hterm
 	int	restart;
 	t_arr	win_lim;
 	t_arr	curs_pos;
+	int	curs_y;
 	int	n_lines;
 }		t_hterm;
 
@@ -184,8 +185,8 @@ char		**my_tab_reverse(char **tab);
 void		handle_multiple_command(t_state **machine);
 void		print_cmd(t_hterm *hterm, int a);
 void		handle_arrows(t_hterm **p_hterm);
-int		my_strinchr(char *str, int n, int width);
-void		get_cursor_position(t_hterm **p_hterm);
+int		count_rows(t_hterm *hterm);
+void		get_cursor_position(t_hterm *hterm);
 void		apply_term(char *op);
 void		print_cursor_up(int n);
 void		print_cursor_down(int n);
@@ -200,8 +201,13 @@ char		**my_tab_add_str(char *src, char **tab, int i);
 char		**my_tab_add_str_end(char *src, char **tab);
 char		**my_tab_del_str(char **tab, int n);
 int		not_a_del(char c);
-void		get_terminal_size(t_hterm **p_hterm);
-int		count_lines(char *str, int width, int curs, int li);
-void		get_input_info(t_hterm **p_hterm);
-void		get_info(t_hterm **p_hterm);
+void		get_terminal_size(t_hterm *hterm);
+int		count_lines(t_hterm *hterm, int curs);
+void		get_info(t_hterm *hterm);
+void		clear_after_cursor(void);
+void		place_cursor(int x, int y);
+void		place_cursor_at_end(t_hterm *hterm);
+void		reset_line(void);
+void		erase_line(void);
+char		read_after_esc(void);
 #endif

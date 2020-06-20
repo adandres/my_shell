@@ -6,25 +6,25 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:02:03 by adandres               /    /  /         */
-/*   Updated: 2020/06/15 21:10:56 by adandres                                 */
+/*   Updated: 2020/06/20 19:38:50 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-static char	del_inline(t_hterm **p_hterm)
+static char	del_inline(t_hterm *hterm)
 {
 	int	i;
 	char	tmp;
 	char	prev;
 
-	i = (*p_hterm)->pos;
+	i = hterm->pos;
 	prev = 0;
 	while (i >= 0)
 	{
-		tmp = (*p_hterm)->cmd[i];
-		(*p_hterm)->cmd[i] = prev;
-		if (i < (*p_hterm)->pos - (*p_hterm)->curs)
+		tmp = hterm->cmd[i];
+		hterm->cmd[i] = prev;
+		if (i < hterm->pos - hterm->curs)
 			break;
 		prev = tmp;
 		i--;
@@ -32,40 +32,40 @@ static char	del_inline(t_hterm **p_hterm)
 	return (tmp);
 }
 
-static void	del_prev_char(t_hterm **p_hterm)
+static void	del_prev_char(t_hterm *hterm)
 {
 	char	del;
 	int	a;
 
 	a = 0;
-	if ((*p_hterm)->curs == (*p_hterm)->pos)
+	if (hterm->curs == hterm->pos)
 		return;
-	get_cursor_position(p_hterm);
-	del = del_inline(p_hterm);
-	if (del == '\n' || (*p_hterm)->curs_pos.x == 1)
+	del = del_inline(hterm);
+	if (del == '\n' || hterm->curs_pos.x == 1)
 	{
 		my_printf("\x1b[J");
 		my_printf(ARROW_UP);
-a = my_strinchr((*p_hterm)->cmd, (*p_hterm)->pos - (*p_hterm)->curs, (*p_hterm)->win_lim.x);
+		a = count_rows(hterm);
 		if (a > 0)
 			print_cursor_right(a);
-		get_cursor_position(p_hterm);
+		get_cursor_position(hterm);
 		if (a > 0)
-			(*p_hterm)->curs_pos.x++;
+			hterm->curs_pos.x++;
+		hterm->curs_y -= 1;
 	}
 	else
 		my_printf(DEL_PREV_CHAR);
-	(*p_hterm)->pos -= 1;
-	if ((*p_hterm)->curs)
-		print_cmd(*p_hterm, -1);
+	hterm->pos -= 1;
+	if (hterm->curs)
+		print_cmd(hterm, -1);
 }
 
-static void		reset_cmd(t_hterm **p_hterm)
+static void		reset_cmd(t_hterm *hterm)
 {
-	my_bzero((*p_hterm)->cmd, my_strlen((*p_hterm)->cmd));
-	(*p_hterm)->pos = 0;
-	(*p_hterm)->curs = 0;
-	(*p_hterm)->restart = 1;
+	my_bzero(hterm->cmd, my_strlen(hterm->cmd));
+	hterm->pos = 0;
+	hterm->curs = 0;
+	hterm->restart = 1;
 }
 
 int		handle_user_input(t_hterm **p_hterm, char c)
@@ -79,15 +79,15 @@ int		handle_user_input(t_hterm **p_hterm, char c)
 		exit(EXIT_SUCCESS);
 	}
 	else if (c == 0)
-		reset_cmd(p_hterm);
+		reset_cmd(*p_hterm);
 	else if (c == DEL)
-		del_prev_char(p_hterm);
+		del_prev_char(*p_hterm);
 	else if (c == CLEAR)
 		;
 	else if (c == '\n' || c == '\v')
 		;
 	else if (c == TAB)
-		;//auto completion
+		;
 	else
 		return (0);
 	return (1);

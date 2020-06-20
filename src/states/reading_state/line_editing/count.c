@@ -1,68 +1,72 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   my_strinchr.c                                   /       \.'`  `',.--//   */
+/*   count.c                                         /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:26:29 by adandres               /    /  /         */
-/*   Updated: 2020/06/15 21:08:16 by adandres                                 */
+/*   Updated: 2020/06/20 19:38:11 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
-int	count_lines(char *str, int width, int curs, int n_ligne)
+int	count_lines(t_hterm *hterm, int curs)
 {
-	int	count;
+	int	ligne;
+	int	x;
 	int	i;
-	int	li;
 
 	i = 0;
-	count = 0;
-	li = 2;
-	while (str[i])
+	ligne = 0;
+	x = 2;
+	while (hterm->cmd[i])
 	{
-		li++;
-		if (str[i] == '\n' && li != 0)
+		x++;
+		if (hterm->cmd[i] == '\n')
 		{
-			count++;
-			li = 0;
+			ligne++;
+			x = 0;
 		}
-		else if (li % (width) == 0 && i != 0 && li != 0)
+		if (x == hterm->win_lim.x)
 		{
-			count++;
-			li = 0;
+			ligne++;
+			x = 0;
 		}
 		if (i == curs && curs != 0)
-			count = 0;
+			ligne = 0;
 		i++;
 	}
-	return (count);
+	if (x + 1 == hterm->win_lim.x)
+		ligne++;
+	return (ligne);
 }
 
-int	my_strinchr(char *str, int n, int width)
+int	count_rows(t_hterm *hterm)
 {
-	int	nb;
-	int	re;
+	int	ligne;
+	int	x;
+	int	n;
 	int	i;
 
-	nb = 0;
+	ligne = 1;
+	x = 2;
 	i = 0;
-	re = 0;
-	while (str[i] && i < n - 1)
+	n = hterm->pos - hterm->curs;
+	while (hterm->cmd[i] && i < n - 1)
 	{
-		nb++;
-		if (str[i] == '\n')
+		x++;
+		if (hterm->cmd[i] == '\n')
 		{
-			nb = 0;
-			re++;
+			x = 0;
+			ligne++;
 		}
-		if (nb % (width) == 0 && i != 0 && nb != 0)
-			nb = 0;
+		if (x % (hterm->win_lim.x) == 0 && x != 0)
+			x = 0;
 		i++;
 	}
-	if (re == 0)
-		nb += 3;
-	return (nb);
+	if (ligne == 1)
+		x += 3;
+	return (x);
 }

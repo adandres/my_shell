@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 18:22:49 by adandres               /    /  /         */
-/*   Updated: 2020/06/15 14:31:31 by adandres                                 */
+/*   Updated: 2020/06/20 16:19:53 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_hterm		*init_term_handling_struct(t_state *machine)
 	hterm->curs = 0;
 	hterm->hist = -1;
 	hterm->restart = 0;
+	hterm->curs_y = 0;
 	return (hterm);
 }
 
@@ -68,10 +69,21 @@ void		re_read_input(t_state **machine)
 		handle_multiple_command(machine);
 }
 
-void		reset_line(void)
+
+
+void		read_multi_cmd(t_state **machine)
 {
-	my_printf("\x1b[2K");
-	my_printf("\x1b[%dD", 3);
+	(*machine)->cmd = my_strdup((*machine)->cmd_tab[(*machine)->cmd_tab_i]);
+	(*machine)->cmd_tab_i += 1;
+	if ((*machine)->cmd_tab_i == (*machine)->cmd_tab_len)
+	{
+		(*machine)->cmd_tab_len = 0;
+		(*machine)->cmd_tab_i = 0;
+		free_tab((*machine)->cmd_tab);
+	}
+	(*machine)->state = PARSE;
+	return;
+
 }
 
 void		read_input(t_state **machine)
@@ -79,18 +91,7 @@ void		read_input(t_state **machine)
 	t_hterm		*hterm;
 
 	if ((*machine)->cmd_tab_len != 0)
-	{
-		(*machine)->cmd = my_strdup((*machine)->cmd_tab[(*machine)->cmd_tab_i]);
-		(*machine)->cmd_tab_i += 1;
-		if ((*machine)->cmd_tab_i == (*machine)->cmd_tab_len)
-		{
-			(*machine)->cmd_tab_len = 0;
-			(*machine)->cmd_tab_i = 0;
-			free_tab((*machine)->cmd_tab);
-		}
-		(*machine)->state = PARSE;
-		return;
-	}
+		return (read_multi_cmd(machine));
 	reset_line();
 	hterm = init_term_handling_struct(*machine);
 	if (isatty(STDIN_FILENO))

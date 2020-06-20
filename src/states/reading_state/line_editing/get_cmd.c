@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:58:27 by adandres               /    /  /         */
-/*   Updated: 2020/06/15 14:53:39 by adandres                                 */
+/*   Updated: 2020/06/20 17:18:14 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,12 @@ static int		resize(char **str, int n)
 	return (n);
 }
 
-static void	add_char_at_curs(t_hterm **p_hterm, char input)
+static void	add_char_at_curs(t_hterm *hterm, char input)
 {
-	t_hterm	*hterm;
 	int	i;
 	char	tmp;
 
 	i = 1;
-	get_cursor_position(p_hterm);
-	get_terminal_size(p_hterm);
-	hterm = *p_hterm;
 	tmp = hterm->cmd[hterm->pos - hterm->curs];
 	hterm->cmd[hterm->pos - hterm->curs] = input;
 	while (hterm->pos - hterm->curs + i <= hterm->pos)
@@ -53,28 +49,18 @@ static void	add_char_at_curs(t_hterm **p_hterm, char input)
 	}
 }
 
-static void	cursor_at_end(t_hterm **p_hterm)
-{
-	int	a;
-
-	if ((*p_hterm)->curs == 0 || (*p_hterm)->pos == 0)
-		return;
-	a = my_strcount((*p_hterm)->cmd + (*p_hterm)->pos - (*p_hterm)->curs, '\n');
-	my_printf("\x1b[%dB", a);
-}
-
 void	get_cmd(t_hterm **p_hterm)
 {
 	t_hterm		*hterm;
 	int		size;
 	char		input;
 
-	my_printf("\x1b[7h");
-	hterm = *p_hterm;
 	input = 0;
+	hterm = *p_hterm;
 	size = resize(&hterm->cmd, 0);
+	my_printf("\x1b[7h");
 	apply_term("ROW");
-	get_info(&hterm);
+	get_info(hterm);
 	while (input != '\n' && (isatty(0) || input) && !hterm->restart)
 	{
 		if (read(STDIN_FILENO, &input, 1) < 0)
@@ -85,7 +71,7 @@ void	get_cmd(t_hterm **p_hterm)
 			{
 				if (hterm->pos >= size - 2)
 					size = resize(&hterm->cmd, size);
-				add_char_at_curs(&hterm, input);
+				add_char_at_curs(hterm, input);
 				print_cmd(hterm, 1);
 				hterm->pos += 1;
 			}
@@ -95,11 +81,11 @@ void	get_cmd(t_hterm **p_hterm)
 					size *= 2;
 				size = resize(&hterm->cmd, size);
 			}
-			get_info(&hterm);
+			get_info(hterm);
 		}
 	}
 	apply_term("RESET");
-	cursor_at_end(p_hterm);
+	place_cursor_at_end(hterm);
 	if (hterm->restart == 0)
 		printf("\n");
 }

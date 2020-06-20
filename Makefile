@@ -6,7 +6,7 @@
 #    By: adandres                                    \       /'.____.'\___|    #
 #                                                     '-...-' __/ | \   (`)    #
 #    Created: 2020/04/06 17:14:21 by adandres               /    /  /          #
-#    Updated: 2020/05/30 16:32:18 by adandres                                  #
+#    Updated: 2020/06/20 19:42:00 by adandres                                  #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ FLAGS = -Wextra -Wall
 VPATH = src: \
 	src/states: \
 	src/states/reading_state: \
-	src/states/reading_state/user_input: \
+	src/states/reading_state/line_editing: \
 	src/states/parsing_state: \
 	src/states/parsing_state/sort/:\
 	src/states/building_state: \
@@ -33,7 +33,7 @@ SRC =	starting_state.c read_input.c read_file.c parse_input.c assign.c\
 	get_word.c utils_parse.c exec_loop.c exec_builtin.c error.c sort.c \
 	parser.c expand_redir.c write_hdoc.c handle_multiple_command.c \
 	handle_user_input.c apply_term.c print_cmd.c handle_arrows.c \
-	my_strinchr.c get_cursor_position.c print_cursor.c get_cmd.c \
+	count.c get_cursor_position.c print_cursor.c get_cmd.c \
 	check_quotes.c
 
 H_PATH = include
