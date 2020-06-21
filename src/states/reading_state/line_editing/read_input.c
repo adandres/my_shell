@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 18:22:49 by adandres               /    /  /         */
-/*   Updated: 2020/06/20 16:19:53 by adandres                                 */
+/*   Updated: 2020/06/21 11:36:10 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char		*get_input(t_state *machine)
 	t_hterm *hterm;
 	char	*input;
 
-	my_printf("> ");
+	my_printf(">  ");
 	hterm = init_term_handling_struct(machine);
 	get_cmd(&hterm);
 	input = hterm->cmd;
@@ -49,7 +49,7 @@ void		re_read_input(t_state **machine)
 
 	hterm = init_term_handling_struct(*machine);
 	input = NULL;
-	my_printf("> ");
+	my_printf(">  ");
 	if ((*machine)->cmd)
 		input = my_strjoin_free((*machine)->cmd, "\n");
 	get_cmd(&hterm);
@@ -65,8 +65,6 @@ void		re_read_input(t_state **machine)
 	free(hterm->cmd);
 	free(hterm);
 	(*machine)->cmd = input;
-	if (hterm->pos != 0)
-		handle_multiple_command(machine);
 }
 
 
