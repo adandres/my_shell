@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:21:33 by adandres               /    /  /         */
-/*   Updated: 2020/05/31 16:08:58 by adandres                                 */
+/*   Updated: 2020/06/21 13:23:38 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static char	**grep_argv(t_list *token_list)
 		if (token->type != CMD && token->type != ARG && token->type != SENV)
 			break;
 		if (token->type != SENV)
-			argv[i++] = my_strdup(token->data);
+			argv[i++] = my_strdup(token->content);
 		token_list = token_list->next;
 	}
 	argv[i] = NULL;
@@ -107,11 +107,11 @@ t_ast	*create_branch(t_list *token_list, int state)
 
 	token = token_list->content;
 	if (state != COMMAND)
-		return (create_node(token->data, token->type));
+		return (create_node(token->content, token->type));
 	if (token->type == CMD || token->type == ARG)
 	{
 		ast = create_func_node(token_list);
 		return (ast);
 	}
-	return (create_node(token->data, token->type));
+	return (create_node(token->content, token->type));
 }

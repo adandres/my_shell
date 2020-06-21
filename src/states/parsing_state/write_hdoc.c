@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/18 17:54:25 by adandres               /    /  /         */
-/*   Updated: 2020/05/22 16:19:05 by adandres                                 */
+/*   Updated: 2020/06/21 13:25:25 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	write_hdoc(t_state **machine)
 		if (token->type == R_DOC)
 		{
 			stop = list->next->content;
-			pop_hdoc((t_redir**)&token->data, stop->data, *machine);
+			pop_hdoc((t_redir**)&token->content, stop->content, *machine);
 		}
 		list = list->next;
 	}

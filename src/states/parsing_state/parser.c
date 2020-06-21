@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/22 16:16:13 by adandres               /    /  /         */
-/*   Updated: 2020/05/31 15:34:40 by adandres                                 */
+/*   Updated: 2020/06/21 13:29:24 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	parser(char *input, t_list **token_list)
 	last = 0;
 	while (input[i] != '\0')
 	{
-		if (input[i] != ' ' && input[i] != '\t' && input[i] != '\n')
+		if (check_sep(input[i], " \t\n") == 0)
 		{
 			if ((len = get_next_token(input + i, token_list, &last)) == -1)
 				return;

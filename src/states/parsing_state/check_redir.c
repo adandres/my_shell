@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 19:47:36 by adandres               /    /  /         */
-/*   Updated: 2020/06/03 16:51:59 by adandres                                 */
+/*   Updated: 2020/06/21 13:36:18 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ static int	is_redir(char *input)
 	return (1);
 }
 
-int	check_filename(char *input)
+static int	check_filename(char *input)
 {
 	int	i;
 
@@ -141,7 +141,7 @@ int	check_filename(char *input)
 	{
 		if (check_special_char(input[i]) == 0)
 			return (0);
-		if (input[i] != ' ' && input[i] != '\t' && input[i] != '\n')
+		if (check_sep(input[i], " \t\n") == 0)
 			return (1);
 		i++;
 	}

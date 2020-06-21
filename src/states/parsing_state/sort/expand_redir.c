@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/22 17:55:22 by adandres               /    /  /         */
-/*   Updated: 2020/05/18 17:51:31 by adandres                                 */
+/*   Updated: 2020/06/21 13:24:43 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_token		*expand(t_token *token)
 	char		*input;
 	int		i;
 
-	input = token->data;
+	input = token->content;
 	redir = get_redir(input, token->type);
 	i = pass(input, token->type);
 	if (input[i] && input[i] == '&' && token->type != R_ICL && \
@@ -74,7 +74,7 @@ t_token		*expand(t_token *token)
 		token->type = R_CP;
 		redir->copy = 1;
 	}
-	token->data = redir;
+	token->content = redir;
 	free(input);
 	return (token);
 }

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/19 00:31:31 by adandres               /    /  /         */
-/*   Updated: 2020/06/03 16:21:43 by adandres                                 */
+/*   Updated: 2020/06/21 13:33:52 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 static int check_separator(char c)
 {
 	if ((check_special_char(c) == 0))
-		return (0);
-	if (c == ' ' || c == '\t' || c == '\n')
+		return (0);	
+	if (check_sep(c, " \t\n"))
 		return (0);
 	return (1);
 }

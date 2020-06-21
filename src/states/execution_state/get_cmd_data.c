@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:16:43 by adandres               /    /  /         */
-/*   Updated: 2020/06/04 16:17:35 by adandres                                 */
+/*   Updated: 2020/06/21 13:22:01 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,10 @@ void	get_cmd_data(t_ast **root, t_state *machine)
 	command = argv[0];
 	if ((*root)->type == CMD && command)
 	{
-		if (!(cmd->path = get_cmd_path(command, machine->my_env)))
+		if (!(cmd->path = get_cmd_path(command, machine->env)))
 			(*root)->type = NUL;
 	}
-	machine->my_env = add_or_update_env("_", argv[i - 1], machine->my_env);
+	machine->env = add_or_update_env("_", argv[i - 1], machine->env);
 	cmd->argv = argv;
 	(*root)->data = cmd;
 }

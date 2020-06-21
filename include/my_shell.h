@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:43 by adandres               /    /  /         */
-/*   Updated: 2020/06/20 19:37:58 by adandres                                 */
+/*   Updated: 2020/06/21 13:29:42 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		g_signal;
 typedef struct	s_token
 {
 	int	type;
-	void	*data;
+	void	*content;
 }		t_token;
 
 typedef struct	s_cmd
@@ -94,7 +94,6 @@ typedef struct	s_hterm
 	t_arr	win_lim;
 	t_arr	curs_pos;
 	int	curs_y;
-	int	n_lines;
 }		t_hterm;
 
 typedef struct		s_state
@@ -103,7 +102,7 @@ typedef struct		s_state
 	char		**cmd_tab;
 	int		cmd_tab_len;
 	int		cmd_tab_i;
-	char		**my_env;
+	char		**env;
 	char		**history;
 	t_list		*token_list;
 	t_ast		*tree;
@@ -210,4 +209,5 @@ void		place_cursor_at_end(t_hterm *hterm);
 void		reset_line(void);
 void		erase_line(void);
 char		read_after_esc(void);
+int		check_sep(char c, char *sep);
 #endif

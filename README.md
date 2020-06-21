@@ -1,8 +1,7 @@
 --=== TODOLIST ===--
 
-changer "data" en "content" dans token
-changer "myenv" en "env"
-changer partout x = ' ' en fonction 
+spe env
+start to use set env
 
 --=== ===--
 proteger malloc retour et fonction

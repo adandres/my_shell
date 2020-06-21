@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:13:50 by adandres               /    /  /         */
-/*   Updated: 2020/06/04 16:58:37 by adandres                                 */
+/*   Updated: 2020/06/21 13:21:39 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ static int	extent(char **input, int i, t_state *machine)
 	if (i != 0)
 		head = my_strndup(*input, i);
 	if (check_special_env(*input + i, &extended, machine) == 0)
-		len = get_param(*input + i, &extended, machine->my_env);
+		len = get_param(*input + i, &extended, machine->env);
 	free(*input);
 	*input = head;
 	if (head && extended)
@@ -160,7 +160,7 @@ char		*extand(char *to_ext, t_state *machine)
 	quotes = 0;
 	input = my_strdup(to_ext);
 	if (input[0] == '~')
-		i = replace_by_home(&input, machine->my_env);
+		i = replace_by_home(&input, machine->env);
 	while (input && input[i])
 	{
 		quotes = check_quotes(input[i], quotes);

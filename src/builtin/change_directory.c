@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 01:18:49 by adandres               /    /  /         */
-/*   Updated: 2020/05/31 15:20:51 by adandres                                 */
+/*   Updated: 2020/06/21 13:19:11 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		change_directory(char **argv, t_state **machine)
 	char		**env;
 	char		*str;
 
-	env = (*machine)->my_env;
+	env = (*machine)->env;
 	if ((str = new_directory(argv[1], env)) == NULL)
 		printf("Ah!\n");;
 	path = my_strnew(PATH_MAX);
@@ -80,7 +80,7 @@ int		change_directory(char **argv, t_state **machine)
 	path = my_strnew(PATH_MAX);
 	path = getcwd(path, PATH_MAX);
 	env = add_or_update_env("PWD", path, env);
-	(*machine)->my_env = env;
+	(*machine)->env = env;
 	free(str);
 	free(path);
 	return (0);

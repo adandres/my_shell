@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 19:59:03 by adandres               /    /  /         */
-/*   Updated: 2020/04/18 23:12:47 by adandres                                 */
+/*   Updated: 2020/06/21 13:30:40 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	check_command(t_token *token)
 	return (0);
 }
 
-static int	check_sep(t_token *token)
+static int	check_del(t_token *token)
 {
 	if (token->type == PIPE || token->type / 10 < REDIR)
 		return (1);
@@ -57,7 +57,7 @@ void	first_is_cmd(t_list **list)
 	{
 		if (check_command(curr->content) && j != 0)
 			swap(list, &head, prev, curr);
-		if (check_sep(curr->content))
+		if (check_del(curr->content))
 		{
 			head = curr;
 			j = -1;

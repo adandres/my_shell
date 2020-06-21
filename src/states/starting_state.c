@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:13:38 by adandres               /    /  /         */
-/*   Updated: 2020/06/05 18:42:13 by adandres                                 */
+/*   Updated: 2020/06/21 13:18:33 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,9 +159,9 @@ t_state	*start_machine(int argc, char **argv, char **env)
 	machine->tree = NULL;
 	machine->cmd = NULL;
 	machine->history = NULL;
-	machine->my_env = NULL;
+	machine->env = NULL;
 	machine->token_list = NULL;
-	machine->my_env = copy_check_env(argv[0], env);
+	machine->env = copy_check_env(argv[0], env);
 	machine->history = read_history(".my_shell_history");
 	if (argc > 1)
 		check_if_file(&machine, argc, argv);

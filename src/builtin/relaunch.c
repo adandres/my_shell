@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:25:54 by adandres               /    /  /         */
-/*   Updated: 2020/06/04 15:54:44 by adandres                                 */
+/*   Updated: 2020/06/21 13:22:14 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int			relaunch(char **argv, char **cpy)
 	parse_input(&machine);
 	build_state(&machine);
 	execute_tree(&machine);
-	if (machine->my_env)
-		free_tab(machine->my_env);
+	if (machine->env)
+		free_tab(machine->env);
 	free(machine);
 	return (0);
 }

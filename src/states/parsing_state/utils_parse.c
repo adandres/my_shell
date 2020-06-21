@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/19 00:41:08 by adandres               /    /  /         */
-/*   Updated: 2020/04/23 17:24:19 by adandres                                 */
+/*   Updated: 2020/06/21 13:24:18 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_list(t_list *list, int print_type)
 	while (list != NULL)
 	{
 		token = (t_token*)list->content;
-		str = token->data;
+		str = token->content;
 		if (print_type)
 			printf("%d", token->type);
 		else
@@ -38,7 +38,7 @@ t_token		*create_token(char *input, int type)
 
 	token = (t_token*)malloc(sizeof(t_token));
 	token->type = type;
-	token->data = input;
+	token->content = input;
 	return (token);
 }
 

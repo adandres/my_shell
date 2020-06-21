@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 01:32:33 by adandres               /    /  /         */
-/*   Updated: 2020/06/04 14:53:31 by adandres                                 */
+/*   Updated: 2020/06/21 13:19:38 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,13 @@ int				my_env(char **argv, t_state **machine)
 	int	status;
 
 	status = 0;
-	cpy = my_tabdup((*machine)->my_env);
+	cpy = my_tabdup((*machine)->env);
 	if ((index = parse_options(argv, &cpy)) == 0 && cpy)
 		print_tab(cpy);
 	if (index > 0)
 	{
 		command = argv[index];
-		argv[index] = get_cmd_path(command, (*machine)->my_env);
+		argv[index] = get_cmd_path(command, (*machine)->env);
 		free(command);
 		relaunch(argv + index, cpy);
 	}

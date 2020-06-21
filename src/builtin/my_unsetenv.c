@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 19:18:15 by adandres               /    /  /         */
-/*   Updated: 2020/04/17 22:42:29 by adandres                                 */
+/*   Updated: 2020/06/21 13:20:00 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int		my_unsetenv(char **argv, t_state **machine)
 			printf("Nope\n");
 			return (1);
 		}
-		if (env_index((*machine)->my_env, argv[i]) >= 0)
-			(*machine)->my_env = my_unset(argv[i], (*machine)->my_env);
+		if (env_index((*machine)->env, argv[i]) >= 0)
+			(*machine)->env = my_unset(argv[i], (*machine)->env);
 		i++;
 	}
 	return (0);

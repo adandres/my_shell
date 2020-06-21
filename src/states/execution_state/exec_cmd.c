@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 21:38:34 by adandres               /    /  /         */
-/*   Updated: 2020/06/04 17:06:33 by adandres                                 */
+/*   Updated: 2020/06/21 13:18:49 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void		exec_command(t_cmd *command, t_state *machine)
 	if (command->builtin >= 0)
 		exec_builtin(&machine, command);
 	else
-		execve(command->path, command->argv, machine->my_env);
+		execve(command->path, command->argv, machine->env);
 	exit(EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/05/26 23:29:43 by adandres               /    /  /         */
-/*   Updated: 2020/06/20 17:09:09 by adandres                                 */
+/*   Updated: 2020/06/21 13:16:34 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,4 @@ void		get_info(t_hterm *hterm)
 {
 	get_cursor_position(hterm);
 	get_terminal_size(hterm);
-	hterm->n_lines = count_lines(hterm, 0);
 }

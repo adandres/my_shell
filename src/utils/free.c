@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/15 12:17:28 by adandres               /    /  /         */
-/*   Updated: 2020/05/23 19:18:47 by adandres                                 */
+/*   Updated: 2020/06/21 13:23:56 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	free_token(t_token *token)
 {
 	if (token == NULL)
 		return;
-	if (token->data)
-		free(token->data);
+	if (token->content)
+		free(token->content);
 	free(token);
 }
 
@@ -76,7 +76,7 @@ void	reset(t_state *machine)
 void	free_all(t_state *machine)
 {
 	reset(machine);
-	free_tab(machine->my_env);
+	free_tab(machine->env);
 	free_tab(machine->history);
 	free(machine);
 }
