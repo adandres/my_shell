@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:21:33 by adandres               /    /  /         */
-/*   Updated: 2020/06/21 13:23:38 by adandres                                 */
+/*   Updated: 2020/06/22 19:14:00 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ static int		is_set(char *input)
 	return (0);
 }
 
-static int		builtin(char *input)
+int		is_builtin(char *input, int type)
 {
 	if (my_strcmp(input, "cd") == 0)
 		return (CD);
 	if (my_strcmp(input, "unset") == 0)
 		return (UNSET);
-	if (my_strcmp(input, "set") == 0 || is_set(input))
+	if (my_strcmp(input, "set") == 0 || (is_set(input) && type == CMD))
 		return (SET);
-	if (my_strcmp(input, "env") == 0)
+	if (my_strcmp(input, "env") == 0 || (is_set(input) && type == SENV))
 		return (ENV);
 	if (my_strcmp(input, "echo") == 0)
 		return (BECHO);
@@ -73,28 +73,30 @@ static char	**grep_argv(t_list *token_list)
 		token = token_list->content;
 		if (token->type != CMD && token->type != ARG && token->type != SENV)
 			break;
-		if (token->type != SENV)
-			argv[i++] = my_strdup(token->content);
+		argv[i++] = my_strdup(token->content);
 		token_list = token_list->next;
 	}
 	argv[i] = NULL;
 	return (argv);
 }
 
-static t_ast	*create_func_node(t_list *token_list)
+static t_ast	*create_func_node(t_list *token_list, int type)
 {
 	t_cmd		*cmd;
 	t_ast		*new;
-	int		type;
+	t_token		*token;
 
 	new = NULL;
-	type = CMD;
 	my_lst_reverse(&token_list);
+	token = token_list->content;
+	type = token->type;
 	cmd = (t_cmd*)malloc(sizeof(t_cmd));
 	cmd->argv = grep_argv(token_list);
 	cmd->path = NULL;
-	if ((cmd->builtin = builtin(cmd->argv[0])) >= 0)
+	if ((cmd->builtin = is_builtin(cmd->argv[0], type)) >= 0)
 		type = BUILT;
+	else
+		type = CMD;
 	new = create_node(cmd, type);
 	my_lst_reverse(&token_list);
 	return (new);
@@ -108,9 +110,9 @@ t_ast	*create_branch(t_list *token_list, int state)
 	token = token_list->content;
 	if (state != COMMAND)
 		return (create_node(token->content, token->type));
-	if (token->type == CMD || token->type == ARG)
+	if (token->type == CMD || token->type == ARG || token->type == SENV)
 	{
-		ast = create_func_node(token_list);
+		ast = create_func_node(token_list, token->type);
 		return (ast);
 	}
 	return (create_node(token->content, token->type));

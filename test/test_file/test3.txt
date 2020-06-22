@@ -12,3 +12,5 @@ echo $lala"tutu toto"
 echo $lala" tutu toto"
 ls $lala" tutu toto"
 ls "tutu toto "$lala
+lala=lolo > .tmp1 tutu=titi ls ; < .tmp1 cat ; rm .tmp1
+lala=lolo cd .. ; pwd ; cd -

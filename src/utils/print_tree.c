@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 21:16:54 by adandres               /    /  /         */
-/*   Updated: 2020/05/17 16:29:12 by adandres                                 */
+/*   Updated: 2020/06/22 12:18:45 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	print_tree(t_ast *root, int level)
 {
 	char	*value;
 	t_cmd	*cmd;
+	t_redir *redir;
+
 	char	**tab;
 
 	if (root == NULL)
@@ -46,7 +48,11 @@ void	print_tree(t_ast *root, int level)
 		else if (root->type / 10 != REDIR)
 			value = root->data;
 		else
-			value = my_itoa(root->type);
+		{
+			redir = root->data;
+			value = redir->input;//my_itoa(root->type);
+		
+		}
 		print_tree(root->right, level + 1);
 		padding('\t', level + 1);
 		my_printf("%s\n", value);

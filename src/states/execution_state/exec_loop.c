@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/19 13:17:02 by adandres               /    /  /         */
-/*   Updated: 2020/06/04 16:10:08 by adandres                                 */
+/*   Updated: 2020/06/22 18:56:58 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int 	check_built(t_ast *root, t_state **machine, t_return **ret, int r_ty
 {
 	if (root->type == BUILT && r_type != PIPE)
 	{
-		exec_builtin(machine, root->data);
+		exec_builtin(machine, root->data, *ret);
 		dup2((*ret)->fd_out, 1);
 	}
 	return (0);

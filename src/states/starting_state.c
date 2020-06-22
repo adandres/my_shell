@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:13:38 by adandres               /    /  /         */
-/*   Updated: 2020/06/21 13:18:33 by adandres                                 */
+/*   Updated: 2020/06/22 12:29:06 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,18 @@ char			**copy_check_env(char *name, char **env)
 	return (new_env);
 }
 
+char	**set_set(void)
+{
+	char	**set;
+
+	set = (char**)malloc(sizeof(char*) * 4);
+	set[0] = my_strdup("HISTFILE=.bash_history");
+	set[1] = my_strdup("HISTFILESIZE=500");
+	set[2] = my_strdup("HISTSIZE=500");
+	set[3] = NULL;
+	return (set);
+}
+
 t_state	*start_machine(int argc, char **argv, char **env)
 {
 	t_state		*machine;
@@ -162,6 +174,7 @@ t_state	*start_machine(int argc, char **argv, char **env)
 	machine->env = NULL;
 	machine->token_list = NULL;
 	machine->env = copy_check_env(argv[0], env);
+	machine->set = set_set();
 	machine->history = read_history(".my_shell_history");
 	if (argc > 1)
 		check_if_file(&machine, argc, argv);

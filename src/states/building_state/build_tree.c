@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:14:11 by adandres               /    /  /         */
-/*   Updated: 2020/05/31 16:07:00 by adandres                                 */
+/*   Updated: 2020/06/22 18:33:33 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	add_list(t_list **tail, t_list *head)
 
 static int check_(t_token *token, int state)
 {
-	if ((token->type / 10) == state && token->type != SENV)
+	if ((token->type / 10) == state)
 		return (1);
 	return (0);
 }

@@ -6,19 +6,16 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 21:38:34 by adandres               /    /  /         */
-/*   Updated: 2020/06/21 13:18:49 by adandres                                 */
+/*   Updated: 2020/06/22 19:13:27 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_shell.h"
 
+
 static void		exec_command(t_cmd *command, t_state *machine)
 {
-	if (command->builtin >= 0)
-		exec_builtin(&machine, command);
-	else
-		execve(command->path, command->argv, machine->env);
-	exit(EXIT_SUCCESS);
+	execve(command->path, command->argv, machine->env);
 }
 
 static int	check_out(int type)
@@ -65,6 +62,18 @@ static void	store_stdout(t_return **ret, int p[2])
 	(*ret)->n_proc += 1;
 }
 
+int		exec_builtin(t_state **machine, t_cmd *cmd, t_return *ret)
+{
+	static int	(*builtin_func[7])(char **argv, t_state **machine) = \
+	{&exit_prog, &ft_echo, &change_directory, \
+		&my_env, &my_unsetenv, &my_set, &my_export};
+
+	check_red(ret);
+	(*machine)->status = (builtin_func[cmd->builtin])(cmd->argv, machine);
+	return (0);
+}
+
+
 void	exec_cmd(t_ast *root, t_state *machine, t_return **ret, int r_type)
 {
 	int	p[2];
@@ -89,11 +98,13 @@ void	exec_cmd(t_ast *root, t_state *machine, t_return **ret, int r_type)
 			check_pipe(root->type, r_type, *ret, p);
 		if (leaf->type / 10 == REDIR)
 			exec_loop(leaf, &machine, ret, root->type);
-		else
+		else if (leaf->type == CMD)
 		{
 			check_red(*ret);
 			exec_command(leaf->data, machine);
 		}
+		else if (leaf->type == BUILT)
+			exec_builtin(&machine, leaf->data, *ret);
 		exit(EXIT_SUCCESS);
 	}
 	else

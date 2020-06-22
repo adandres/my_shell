@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 17:15:54 by adandres               /    /  /         */
-/*   Updated: 2020/05/26 22:53:02 by adandres                                 */
+/*   Updated: 2020/06/22 12:58:03 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	env_index(char **env, char *to_find)
 	len = my_strlen(to_find);
 	while (env[i])
 	{
-		if (my_strncmp(env[i], to_find, len) == 0)
+		if (my_strncmp(env[i], to_find, my_strichr(env[i], '=')) == 0)
 			return (i); 
 		i++;
 	}

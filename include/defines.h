@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:23:42 by adandres               /    /  /         */
-/*   Updated: 2020/06/03 16:08:37 by adandres                                 */
+/*   Updated: 2020/06/22 12:15:07 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@
 # define FILENAME	44
 # define VAR		45
 # define SENV		46
-# define RENV		47
 # define NUL		9
 
 /*

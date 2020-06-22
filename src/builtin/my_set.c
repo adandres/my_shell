@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/16 16:45:34 by adandres               /    /  /         */
-/*   Updated: 2020/06/21 13:20:35 by adandres                                 */
+/*   Updated: 2020/06/22 13:25:50 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,24 @@ int relaunch(char **argv, char **cpy);
 
 int				my_set(char **argv, t_state **machine)
 {
-	char	**env;
+	char	**set;
 	int	i;
 
-	env = NULL;
-	i = 1;
-	if ((*machine)->env)
-		env = my_tabdup((*machine)->env);
+	set = NULL;
+	i = 0;
+	if ((*machine)->set)
+		set = my_tabdup((*machine)->set);
 	while (argv[i])
 	{
 		if (my_strichr(argv[i], '=') >= 0)
-			env = add_new_env(argv[i], env);
+			set = add_new_env(argv[i], set);
 		i++;
 	}
-	if (i == 0 && env)
-		print_tab(env);
-	if ((*machine)->env != NULL)
-		free_tab((*machine)->env);
-	if (env)
-		(*machine)->env = env;
+	if (set)
+		print_tab(set);
+	if ((*machine)->set != NULL)
+		free_tab((*machine)->set);
+	if (set)
+		(*machine)->set = set;
 	return (0);
 }

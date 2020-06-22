@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 19:59:03 by adandres               /    /  /         */
-/*   Updated: 2020/06/21 13:30:40 by adandres                                 */
+/*   Updated: 2020/06/22 18:34:45 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,25 @@ static void	swap(t_list **list, t_list **head, t_list *prev, t_list *curr)
 	}
 }
 
-static int	check_command(t_token *token)
+static int	check_command(t_token *token, int mode)
 {
-	if (token->type == CMD)
+	if (token->type == CMD && mode == 1)
+		return (1);
+	if (token->type == SENV && mode == 0)
 		return (1);
 	return (0);
 }
 
 static int	check_del(t_token *token)
 {
-	if (token->type == PIPE || token->type / 10 < REDIR)
+	if ((token->type == PIPE || token->type / 10 < REDIR))
+		return (1);
+	if (token->type == SENV)
 		return (1);
 	return (0);
 }
 
-void	first_is_cmd(t_list **list)
+void	first_is_cmd(t_list **list, int mode)
 {
 	t_list	*head;
 	t_list	*curr;
@@ -55,7 +59,7 @@ void	first_is_cmd(t_list **list)
 	head = NULL;
 	while (curr)
 	{
-		if (check_command(curr->content) && j != 0)
+		if (check_command(curr->content, mode) && j != 0)
 			swap(list, &head, prev, curr);
 		if (check_del(curr->content))
 		{
@@ -66,4 +70,6 @@ void	first_is_cmd(t_list **list)
 		prev = curr;
 		curr = curr->next;
 	}
+	if (mode == 0)
+		first_is_cmd(list, 1);
 }

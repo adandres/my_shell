@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/22 16:07:19 by adandres               /    /  /         */
-/*   Updated: 2020/05/14 13:20:12 by adandres                                 */
+/*   Updated: 2020/06/22 18:05:53 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	sort_token(t_list **token_list, int is_debug)
 		print_list(*token_list, 1);
 		printf("\n");
 	}
-	first_is_cmd(token_list);
+	first_is_cmd(token_list, 0);
 	if (is_debug)
 	{
 		printf("input_list: ");

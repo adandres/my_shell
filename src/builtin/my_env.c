@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 01:32:33 by adandres               /    /  /         */
-/*   Updated: 2020/06/21 13:19:38 by adandres                                 */
+/*   Updated: 2020/06/22 19:15:42 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ static int		parse_options(char **argv, char ***pcpy)
 	int		i;
 	int		j;
 
-	i = 1;
+	i = 0;
+	if (my_strcmp("env", argv[0]) == 0)
+		i = 1;
 	cpy = *pcpy;
 	while (argv[i] && argv[i][0] == '-')
 	{
@@ -121,8 +123,11 @@ int				my_env(char **argv, t_state **machine)
 	if (index > 0)
 	{
 		command = argv[index];
-		argv[index] = get_cmd_path(command, (*machine)->env);
-		free(command);
+		if (is_builtin(command, CMD) < 0)
+		{
+			argv[index] = get_cmd_path(command, (*machine)->env);
+			free(command);
+		}
 		relaunch(argv + index, cpy);
 	}
 	else

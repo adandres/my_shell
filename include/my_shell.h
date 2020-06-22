@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:43 by adandres               /    /  /         */
-/*   Updated: 2020/06/21 13:29:42 by adandres                                 */
+/*   Updated: 2020/06/22 19:14:24 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct	s_cmd
 
 typedef struct	s_redir
 {
+	char	*input;
 	int	fd;
 	int	copy;
 	int	close;
@@ -103,6 +104,7 @@ typedef struct		s_state
 	int		cmd_tab_len;
 	int		cmd_tab_i;
 	char		**env;
+	char		**set;
 	char		**history;
 	t_list		*token_list;
 	t_ast		*tree;
@@ -125,7 +127,7 @@ void		parse_input(t_state **machine);
 int		get_token(t_token **token, char *input, int last);
 int		check_redir(t_token **token, char *input);
 void		reverse_redir(t_list **token_list);
-void		first_is_cmd(t_list **token_list);
+void		first_is_cmd(t_list **token_list, int mode);
 void		sort_list(t_list **token_list);
 void	assign_word(t_list **token_list);
 
@@ -158,7 +160,7 @@ int		my_tablen(char **tab);
 char		**my_tabdup(char **tab);
 void		print_tab(char **tab);
 
-int		exec_builtin(t_state **machine, t_cmd *cmd);
+int		exec_builtin(t_state **machine, t_cmd *cmd, t_return *ret);
 void		re_read_input(t_state **machine);
 void		re_read_file(t_state **machine);
 void		reset(t_state *machine);
@@ -210,4 +212,5 @@ void		reset_line(void);
 void		erase_line(void);
 char		read_after_esc(void);
 int		check_sep(char c, char *sep);
+int		is_builtin(char *input, int type);
 #endif
