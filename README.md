@@ -1,7 +1,7 @@
-#my_shell
+## my_shell
 
-my_shell is a UNIX shell based on the 42
-your can see the [subject](https://github.com/Binary-Hackers/42_Subjects/blob/master/00_Projects/01_Unix/42sh.pdf) here.
+"my_shell" is a UNIX shell based on the 42school project 42sh.
+You can see the [subject](https://github.com/Binary-Hackers/42_Subjects/blob/master/00_Projects/01_Unix/42sh.pdf) here.
 
 ## Installation
 
