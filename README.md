@@ -13,7 +13,7 @@ Once cloned and moved into the directory, type "make" to compile the program.
 ```bash
  make
 ```
-my_shell builds with gcc.
+"my_shell" builds with gcc.
 ## Usage
 
 To launch the program type:
