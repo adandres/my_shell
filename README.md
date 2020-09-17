@@ -1,6 +1,6 @@
 ## my_shell
 
-"my_shell" is a UNIX shell based on the school42's project 42sh.
+"my_shell" is a basic UNIX shell based on the school42's project 42sh.
 You can see the [subject](https://github.com/adandres/my_shell/blob/master/42sh.en.pdf) here.
 
 ## Installation
@@ -23,4 +23,4 @@ To launch the program type:
 Once launched, you can use it like a normal shell.
 
 ## Disclaimer
-As i was solo i didnt fully finished it, there might be some leaks or crashs, feel free to report any issue.
+I haven't finished it but it should be stable, still, there might be some leaks and crashs, feel free to report any issue.
