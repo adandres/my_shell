@@ -1,7 +1,7 @@
 ## my_shell
 
 "my_shell" is a UNIX shell based on the school42's project 42sh.
-You can see the [subject](https://github.com/Binary-Hackers/42_Subjects/blob/master/00_Projects/01_Unix/42sh.pdf) here.
+You can see the [subject](https://github.com/adandres/my_shell/blob/master/42sh.en.pdf) here.
 
 ## Installation
 
