@@ -1,25 +1,24 @@
-# Foobar
+#my_shell
 
-Foobar is a Python library for dealing with word pluralization.
+my_shell is a UNIX shell based on the 42
+your can see the [subject](https://github.com/Binary-Hackers/42_Subjects/blob/master/00_Projects/01_Unix/42sh.pdf) here.
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
-
+First you need to clone the the project:
 ```bash
-pip install foobar
+git clone https://github.com/adandres/my_shell.git
 ```
-
+Once cloned and moved into the directory, type "make" to compile the file.
+```bash
+ make
+```
+my_shell builds with gcc.
 ## Usage
 
-```python
-import foobar
-
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
+To launch the program
+```bash
 ```
-
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
