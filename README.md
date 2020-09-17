@@ -1,25 +1,26 @@
 ## my_shell
 
-"my_shell" is a UNIX shell based on the 42school project 42sh.
+"my_shell" is a UNIX shell based on the school42's project 42sh.
 You can see the [subject](https://github.com/Binary-Hackers/42_Subjects/blob/master/00_Projects/01_Unix/42sh.pdf) here.
 
 ## Installation
 
-First you need to clone the the project:
+First you need to clone the project:
 ```bash
 git clone https://github.com/adandres/my_shell.git
 ```
-Once cloned and moved into the directory, type "make" to compile the file.
+Once cloned and moved into the directory, type "make" to compile the program.
 ```bash
  make
 ```
 my_shell builds with gcc.
 ## Usage
 
-To launch the program
+To launch the program type:
 ```bash
+./my_shell
 ```
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Once launched, you can use it like a normal shell.
 
-Please make sure to update tests as appropriate.
+## Disclaimer
+As i was solo i didnt fully finished it, there might be some leaks or crashs, feel free to report any issue.
