@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/22 16:14:32 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 13:11:53 by adandres                                 */
+/*   Updated: 2020/07/09 17:48:07 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	assign_word(t_list **token_list)
 		token = list->content;
 		if (token->type == PIPE || token->type < REDIR * 10)
 		{
-			if (is_cmd == 0 && first->type == SENV)
-				first->type = CMD;
 			is_cmd = 0;
 			first = token;
 		}
@@ -53,6 +51,4 @@ void	assign_word(t_list **token_list)
 		prev_type = token->type;
 		list = list->next;
 	}
-	if (is_cmd == 0 && token->type >= REDIR * 10 && first->type == SENV)
-		first->type = CMD;
 }

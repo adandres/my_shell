@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 20:21:33 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 19:14:00 by adandres                                 */
+/*   Updated: 2020/07/03 07:39:09 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,18 @@ int		is_builtin(char *input, int type)
 		return (CD);
 	if (my_strcmp(input, "unset") == 0)
 		return (UNSET);
-	if (my_strcmp(input, "set") == 0 || (is_set(input) && type == CMD))
+	if (my_strcmp(input, "set") == 0)
 		return (SET);
-	if (my_strcmp(input, "env") == 0 || (is_set(input) && type == SENV))
+	if (is_set(input) && type == SENV)
+		return (SSET);
+	if (my_strcmp(input, "env") == 0)
 		return (ENV);
 	if (my_strcmp(input, "echo") == 0)
 		return (BECHO);
 	if (my_strcmp(input, "exit") == 0)
 		return (EXIT);
+	if (my_strcmp(input, "setenv") == 0)
+		return (SETENV);
 	if (my_strcmp(input, "export") == 0)
 		return (EXPORT);
 	return (-1);

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:13:38 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 12:29:06 by adandres                                 */
+/*   Updated: 2020/09/17 12:51:35 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ t_state	*start_machine(int argc, char **argv, char **env)
 	machine->file_fd = -1;
 	machine->status = 0;
 	machine->is_debug = 0;
+	machine->relaunch = 0;
 	machine->pid = getpid();
 	machine->cmd_tab = NULL;
 	machine->cmd_tab_len = 0;

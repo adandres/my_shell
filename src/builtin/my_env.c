@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/08 01:32:33 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 19:15:42 by adandres                                 */
+/*   Updated: 2020/07/03 08:08:18 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void		free_state(t_state *machine);
 void		free_this(t_list *list);
-int		relaunch(char **argv, char **cpy);
+int		relaunch(char **argv, char ***cpy);
 
 
 static int check_option(char *input)
@@ -115,6 +115,7 @@ int				my_env(char **argv, t_state **machine)
 	char	*command;
 	int	index;
 	int	status;
+	pid_t	pid;
 
 	status = 0;
 	cpy = my_tabdup((*machine)->env);
@@ -122,13 +123,24 @@ int				my_env(char **argv, t_state **machine)
 		print_tab(cpy);
 	if (index > 0)
 	{
-		command = argv[index];
-		if (is_builtin(command, CMD) < 0)
+		if (is_builtin(argv[index], CMD) < 0)
 		{
-			argv[index] = get_cmd_path(command, (*machine)->env);
-			free(command);
+			command = get_cmd_path(argv[index], (*machine)->env);
+			if (command)
+			{
+				free(argv[index]);
+				argv[index] = command;
+			}
 		}
-		relaunch(argv + index, cpy);
+		pid = fork();
+		if (pid == 0)
+		{
+			relaunch(argv + index, &cpy);
+			exit(EXIT_SUCCESS);
+		}
+		else
+			wait(&pid);
+			
 	}
 	else
 		status = 1;

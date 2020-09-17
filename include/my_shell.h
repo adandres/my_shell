@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:12:43 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 19:14:24 by adandres                                 */
+/*   Updated: 2020/07/11 14:32:54 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct	s_cmd
 
 typedef struct	s_redir
 {
-	char	*input;
 	int	fd;
 	int	copy;
 	int	close;
@@ -113,6 +112,7 @@ typedef struct		s_state
 	int		status;
 	int		pid;
 	int		is_debug;
+	int		relaunch;
 }			t_state;
 
 t_state		*start_machine(int argc, char **argv, char **env);
@@ -213,4 +213,6 @@ void		erase_line(void);
 char		read_after_esc(void);
 int		check_sep(char c, char *sep);
 int		is_builtin(char *input, int type);
+int		my_spe_set(char **argv, t_state **machine);
+int		my_setenv(char **argv, t_state **machine);
 #endif

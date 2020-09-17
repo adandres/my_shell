@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 21:38:34 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 19:13:27 by adandres                                 */
+/*   Updated: 2020/07/03 07:43:09 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static void	store_stdout(t_return **ret, int p[2])
 
 int		exec_builtin(t_state **machine, t_cmd *cmd, t_return *ret)
 {
-	static int	(*builtin_func[7])(char **argv, t_state **machine) = \
+	static int	(*builtin_func[9])(char **argv, t_state **machine) = \
 	{&exit_prog, &ft_echo, &change_directory, \
-		&my_env, &my_unsetenv, &my_set, &my_export};
+		&my_env, &my_unsetenv, &my_set, &my_spe_set, &my_setenv, &my_export};
 
 	check_red(ret);
 	(*machine)->status = (builtin_func[cmd->builtin])(cmd->argv, machine);

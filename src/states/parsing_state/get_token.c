@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 19:41:57 by adandres               /    /  /         */
-/*   Updated: 2020/04/22 19:39:49 by adandres                                 */
+/*   Updated: 2020/07/11 14:32:58 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	get_token(t_token **token, char *input, int last)
 {
 	int	i;
 	int	len;
-	int	(*get[3])(t_token **, char *) = {&get_del, &check_redir, &check_word};
+	int	(*get[3])(t_token **,char *) = {&get_del, &check_redir, &check_word};
 
 	i = 0;
 	len = 0;

@@ -6,7 +6,7 @@
 #    By: adandres                                    \       /'.____.'\___|    #
 #                                                     '-...-' __/ | \   (`)    #
 #    Created: 2020/04/06 17:14:21 by adandres               /    /  /          #
-#    Updated: 2020/06/21 13:28:30 by adandres                                  #
+#    Updated: 2020/07/11 15:32:24 by adandres                                  #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRC =	starting_state.c read_input.c read_file.c parse_input.c assign.c\
 	parser.c expand_redir.c write_hdoc.c handle_multiple_command.c \
 	handle_user_input.c apply_term.c print_cmd.c handle_arrows.c \
 	count.c get_cursor_position.c print_cursor.c get_cmd.c \
-	check_quotes.c check_sep.c
+	check_quotes.c check_sep.c my_setenv.c
 
 H_PATH = include
 O_PATH = obj

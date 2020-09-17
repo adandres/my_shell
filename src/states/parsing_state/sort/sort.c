@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/22 16:07:19 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 18:05:53 by adandres                                 */
+/*   Updated: 2020/07/11 11:42:05 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	expand_redir(t_list **token_list);
 void	sort_token(t_list **token_list, int is_debug)
 {
 	my_lst_reverse(token_list);
-	assign_word(token_list);
 	if (is_debug)
 	{
 		printf("input_list: ");
@@ -26,6 +25,7 @@ void	sort_token(t_list **token_list, int is_debug)
 		print_list(*token_list, 1);
 		printf("\n");
 	}
+	assign_word(token_list);
 	first_is_cmd(token_list, 0);
 	if (is_debug)
 	{

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/07 21:21:47 by adandres               /    /  /         */
-/*   Updated: 2020/06/04 17:05:58 by adandres                                 */
+/*   Updated: 2020/06/27 14:57:20 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void    execute_tree(t_state **machine)
 	ret = init_ret();
 	exec_loop((*machine)->tree, machine, &ret, SEMI);
 	(*machine)->status = (ret->status == 0) ? 0 : 1;
+	if ((*machine)->relaunch == 0)
 	history(&(*machine)->history, (*machine)->cmd);
 	free(ret);
 	reset(*machine);

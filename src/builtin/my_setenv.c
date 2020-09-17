@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .-***-.  /\_!/\    \!   */
-/*   my_strjoin_tab.c                                /       \.'`  `',.--//   */
+/*   my_setenv.c                                     /       \.'`  `',.--//   */
 /*                                                 -(        I       I   @\   */
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
-/*   Created: 2020/04/18 19:29:00 by adandres               /    /  /         */
-/*   Updated: 2020/06/27 15:17:03 by adandres                                 */
+/*   Created: 2020/07/03 07:41:34 by adandres               /    /  /         */
+/*   Updated: 2020/07/03 07:42:43 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libme.h"
+#include "my_shell.h"
 
-char		*my_strjoin_tab(char **argv, char *del)
+int		my_setenv(char **argv, t_state **machine)
 {
-	int	i;
-	char	*input;
+	int     i;
 
-	input = my_strdup(argv[0]);
-	i = 1;
+	i = 0;
 	while (argv[i])
 	{
-		input = my_strjoin_free(input, del);
-		input = my_strjoin_free(input, argv[i]);
+		if (my_strichr(argv[i], '=') > 0)
+			(*machine)->env = add_new_env(argv[i], (*machine)->env);
 		i++;
 	}
-	return (input);
+	return (0);
 }

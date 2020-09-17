@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/19 00:41:08 by adandres               /    /  /         */
-/*   Updated: 2020/06/21 13:24:18 by adandres                                 */
+/*   Updated: 2020/07/11 14:46:46 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_token		*create_token(char *input, int type)
 int check_special_char(char c)
 {
         if (c != ';' && c != '|' && c != '>' && c != '!'\
-        && c != '<' && c != '&' && c != '(' && c != ')')
+        && c != '<' && c != '&')
                 return (1);
         return (0);
 }

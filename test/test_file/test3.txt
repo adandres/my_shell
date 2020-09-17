@@ -1,3 +1,5 @@
+env cd .. ; pwd
+cd .. ; cd - ; echo $OLDPWD; lala=lolo cd .. ; echo $OLDPWD; cd -
 env -u TOTO ls
 export lala="lala      "
 ls $lala

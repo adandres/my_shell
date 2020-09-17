@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 21:16:54 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 12:18:45 by adandres                                 */
+/*   Updated: 2020/07/03 15:25:29 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	print_tree(t_ast *root, int level)
 		else
 		{
 			redir = root->data;
-			value = redir->input;//my_itoa(root->type);
+			value = my_itoa(root->type);
 		
 		}
 		print_tree(root->right, level + 1);

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/19 01:12:23 by adandres               /    /  /         */
-/*   Updated: 2020/05/22 14:19:57 by adandres                                 */
+/*   Updated: 2020/07/11 15:32:17 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ static char	*dump_comment(char *input)
 	quotes = 0;
 	while (input[i])
 	{
-		if ((input[i] == '\'' || input[i] == '\"') && \
-			(quotes == 0 || quotes == input[i]))
-			quotes = ((quotes == 0) ? input[i] : 0);
+		quotes = check_quotes(input[i], quotes);
 		if (quotes == 0 && input[i] == '#')
 		{
 			if (i != 0)
@@ -41,18 +39,38 @@ static char	*dump_comment(char *input)
 	return (input);
 }
 
+static int	check_bracket(char *input, int i, int j)
+{
+	int	quotes;
+
+	quotes = 0;
+	while (input[i])
+	{
+		quotes = check_quotes(input[i], quotes);
+		if (quotes == 0 && input[i] == ')' && i > j)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 static int	is_quoted(char *input)
 {
 	int	i;
+	int	j;
 	int	quotes;
 
 	i = 0;
+	j = 0;
 	quotes = 0;
 	while (input && input[i])
 	{
-		if ((input[i] == '\'' || input[i] == '\"') && \
-			(quotes == 0 || quotes == input[i]))
-			quotes = ((quotes == 0) ? input[i] : 0);
+		if (input[i] == '(' && quotes == 0)
+		{
+			if ((j = check_bracket(input, i, j)) < 0)
+				return (1);	
+		}
+		quotes = check_quotes(input[i], quotes);
 		i++;
 	}
 	return (quotes);
@@ -79,12 +97,13 @@ int		wrong_input(t_state **machine)
 void		parse_input(t_state **machine)
 {
 	t_list	*list;
+	int	test;
 
 	list = NULL;
 	if ((*machine)->is_debug)
 		printf("\n--------    Start_parsing    --------\n\n\n");
 	if (wrong_input(machine))
-		return;	
+		return;
 	(*machine)->state = BUILD;
 	parser((*machine)->cmd, &list);
 	if (list)

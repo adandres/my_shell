@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/06 17:23:42 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 12:15:07 by adandres                                 */
+/*   Updated: 2020/07/09 17:45:10 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@
 # define END		4
 # define ERROR		5
 
-# define EXIT       0
-# define BECHO      1
-# define CD         2
-# define ENV        3
-# define UNSET      4
-# define SET        5
-# define EXPORT     6
+# define EXIT		0
+# define BECHO		1
+# define CD		2
+# define ENV		3
+# define UNSET		4
+# define SET		5
+# define SSET		6
+# define SETENV		7
+# define EXPORT		8
 
 /*
  ** 	PARSE state machine's states

@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/18 19:13:50 by adandres               /    /  /         */
-/*   Updated: 2020/06/21 13:21:39 by adandres                                 */
+/*   Updated: 2020/07/16 14:49:08 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,33 @@ static char	*get_var_env(char **env, char *name)
 	return (var);
 }
 
+static int get_next(char *input, int i, int j)
+{
+	while ((input[i] != ')' || i < j) && input[i])
+		i++;
+	return (i + 1);
+}
+
 static char	*get_tail(char *input)
 {
 	char	*tail;
 	int	j;
+	int	i;
 
 	j = 0;
+	i = 0;
 	tail = NULL;
+	while (input[i])
+	{
+		if (input[i] == '(')
+			j = get_next(input, j, i);
+		i++;
+	}
+	if (j == 0)
+	{
 	while (input[j] && (my_isalpha(input[j]) || input[j] == '_'))
 		j++;
+	}
 	if (j != 0 && input[j])
 		tail = my_strdup(input + j);
 	return (tail);
@@ -99,7 +117,10 @@ int	get_param(char *input, char **extended, char **env)
 
 	len = 0;
 	tail = get_tail(input + 1);
-	*extended = parameter_expand(input, env);
+	if (input[1] == '(')
+		printf("t:%s\n", tail);
+	else
+		*extended = parameter_expand(input, env);
 	if (*extended)
 		len = my_strlen(*extended);
 	if (tail)

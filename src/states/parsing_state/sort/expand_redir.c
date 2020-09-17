@@ -6,7 +6,7 @@
 /*   By: adandres                                    \       /'.____.'\___|   */
 /*                                                    '-...-' __/ | \   (`)   */
 /*   Created: 2020/04/22 17:55:22 by adandres               /    /  /         */
-/*   Updated: 2020/06/22 12:21:50 by adandres                                 */
+/*   Updated: 2020/07/03 15:24:47 by adandres                                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ t_token		*expand(t_token *token)
 		token->type = R_CP;
 		redir->copy = 1;
 	}
-	redir->input = my_strdup(input);
 	token->content = redir;
 	free(input);
 	return (token);
