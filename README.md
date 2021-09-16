@@ -23,4 +23,4 @@ To launch the program type:
 Once launched, you can use it like a normal shell.
 
 ## Disclaimer
-I haven't finished it but it should be stable, if you find some leaks and crashs, feel free to report any issue.
+I haven't finished it but it should be stable, feel free to report any issue.
